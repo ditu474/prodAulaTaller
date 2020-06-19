@@ -15,7 +15,7 @@ class LoginWithCredentialsUseCase extends ILoginWithCredentials{
 
   @override
   Future<Either<Failure, User>> execute(LoginCredentialsInput input) async{
-    var user = await _authRepository.loginWithCredentials(email: input.email, password: input.password);
+    final user = await _authRepository.loginWithCredentials(email: input.email, password: input.password);
 
     return user.fold((err) => Left(err), (user) => Right(user));
   }

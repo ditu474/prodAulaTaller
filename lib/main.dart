@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'injection_container.dart' as getInstances;
 import 'package:flutter/services.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  getInstances.setup();
+  await getInstances.setup();
   runApp(AulaTallerApp());
 }
 

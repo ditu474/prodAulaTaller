@@ -1,9 +1,11 @@
 import 'package:aulataller/application/boundaries/login_with_credentials/iLoginWithCredentials.dart';
 import 'package:aulataller/application/boundaries/open_dynamic_link/iOpenDynamicLink.dart';
 import 'package:aulataller/application/usecases/loginWithCredentialsUseCase.dart';
-import 'package:aulataller/application/usecases/openDynamicLink.dart';
+import 'package:aulataller/application/usecases/openDynamicLinkUseCase.dart';
 import 'package:aulataller/domain/repositories/iAuthRepository.dart';
+import 'package:aulataller/infrastructure/datasources/iLocalDataSource.dart';
 import 'package:aulataller/infrastructure/datasources/iRemoteDataSource.dart';
+import 'package:aulataller/infrastructure/datasources/localDataSource.dart';
 import 'package:aulataller/infrastructure/datasources/remoteDataSource.dart';
 import 'package:aulataller/infrastructure/repositories/authRepository.dart';
 import 'package:aulataller/presentation/states/login/login_bloc.dart';
@@ -16,11 +18,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
-void setup(){
+Future<void> setup() async{
   //external
   getIt.registerLazySingleton<Client>(() => http.Client());
-  getIt.registerLazySingletonAsync<SharedPreferences>(() async =>
-    await SharedPreferences.getInstance());
+  final sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
   getIt.registerLazySingleton<DataConnectionChecker>(() => DataConnectionChecker());
 
   //utils
@@ -28,16 +30,18 @@ void setup(){
 
   //infrastructure
   getIt.registerLazySingleton<IRemoteDataSource>(() => RemoteDataSource(client: getIt<Client>()));
+  getIt.registerLazySingleton<ILocalDataSource>(
+    () =>LocalDataSource(sharedPreferences: getIt<SharedPreferences>()));
   getIt.registerLazySingleton<IAuthRepository>(()=> AuthRepository(
     networkInfo: getIt<INetworkInfo>(),
-    remoteDataSource: getIt<IRemoteDataSource>())
-    );
+    remoteDataSource: getIt<IRemoteDataSource>(), 
+    localDataSource: getIt<ILocalDataSource>()));
 
   //application
   getIt.registerLazySingleton<ILoginWithCredentials>(() => 
   LoginWithCredentialsUseCase(authRepository:getIt<IAuthRepository>()));
   getIt.registerLazySingleton<IOpenDynamicLink>(() => 
-  OpenDynamicLink());
+  OpenDynamicLinkUseCase());
 
   //presentation
   getIt.registerFactory<LoginBloc>(()=>LoginBloc(

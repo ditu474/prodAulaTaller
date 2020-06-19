@@ -35,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
             ctx:context,
             background: Colors.red,
             leftWidget:Text(state.error),
-            rightWidget: Icon(Icons.cloud_off)
+            rightWidget: Icon(Icons.block)
           );
         }
         else if(state.status.isSubmissionSuccess){
@@ -61,7 +61,7 @@ class _LoginFormState extends State<LoginForm> {
                 obscure: false,
                 keyboard: TextInputType.emailAddress,
                 errorMsg: state.email.value == '' ? null :
-                 state.email.valid ? null : 'email invalido',
+                 state.email.valid ? null : 'email inválido',
                 onChangeFunction: (value){
                   context.bloc<LoginBloc>().add(EmailChanged(email: value));
                 },
@@ -73,7 +73,7 @@ class _LoginFormState extends State<LoginForm> {
                 obscure: true,
                 keyboard: TextInputType.text,
                 errorMsg: state.password.value == '' ? null :
-                state.password.valid ? null : 'contraseña invalida',
+                state.password.valid ? null : 'contraseña inválida',
                 onChangeFunction: (value){
                   context.bloc<LoginBloc>().add(PasswordChanged(password: value));
                 },
