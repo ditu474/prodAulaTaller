@@ -1,5 +1,6 @@
 import 'package:aulataller/presentation/UI/widgets/customInputForm.dart';
 import 'package:aulataller/presentation/UI/widgets/gradientButton.dart';
+import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:aulataller/presentation/states/login/login_bloc.dart';
 import 'package:aulataller/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -39,12 +40,7 @@ class _LoginFormState extends State<LoginForm> {
           );
         }
         else if(state.status.isSubmissionSuccess){
-          _showSnackBar(
-            ctx:context,
-            background: Colors.green,
-            leftWidget:Text('Bienvenido'),
-            rightWidget: Icon(Icons.child_care)
-          );
+          context.bloc<AuthBloc>().add(AuthenticationLoggedIn());
         }
       },
       builder: (context, state){
@@ -82,7 +78,7 @@ class _LoginFormState extends State<LoginForm> {
               GradientButton(
                 inputText: 'Ingresar',
                 buttonHandler:(){
-                if(state.status.isValidated && !state.status.isSubmissionSuccess){
+                if(state.status.isValidated){
                   context.bloc<LoginBloc>().add(LoginWithCredentialsButtonPressed());
                   }
                 }

@@ -15,6 +15,7 @@ import 'package:aulataller/infrastructure/datasources/iRemoteDataSource.dart';
 import 'package:aulataller/infrastructure/datasources/localDataSource.dart';
 import 'package:aulataller/infrastructure/datasources/remoteDataSource.dart';
 import 'package:aulataller/infrastructure/repositories/authRepository.dart';
+import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:aulataller/presentation/states/login/login_bloc.dart';
 import 'package:aulataller/utils/networkInfo.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
@@ -63,5 +64,9 @@ Future<void> setup() async{
   //presentation
   getIt.registerFactory<LoginBloc>(()=>LoginBloc(
     loginWithCredentials: getIt<ILoginWithCredentials>(),
-    openDynamicLink: getIt<IOpenDynamicLink>()));
+    openDynamicLink: getIt<IOpenDynamicLink>(),
+    saveUser: getIt<ISaveUser>()));
+  getIt.registerFactory<AuthBloc>(()=>AuthBloc(
+    deleteLastUser: getIt<IDeleteUser>(),
+    getLastUser: getIt<IGetLastUser>()));
 }

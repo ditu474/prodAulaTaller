@@ -88,7 +88,7 @@ class AuthRepository implements IAuthRepository{
   @override
   Future<Either<Failure, bool>> userLogout() async{
     try{
-      final response = await localDataSource.deletToken();
+      final response = await localDataSource.deleteToken();
       if (response)
         return Right(true);
       else

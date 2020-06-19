@@ -12,7 +12,7 @@ class DeleteUserUseCase implements IDeleteUser{
     }) : _authRepository = authRepository;
 
   @override
-  Future<Either<Failure, bool>> execute(Null input) async{
+  Future<Either<Failure, bool>> execute(String input) async{
     final response = await _authRepository.userLogout();
     
     return response.fold((err)=>Left(err),(r)=>Right(r));

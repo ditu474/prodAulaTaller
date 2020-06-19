@@ -5,5 +5,5 @@ abstract class ILocalDataSource{
 
   Future<bool> setToken({@required String token});
 
-  Future<bool> deletToken();
+  Future<bool> deleteToken();
 }

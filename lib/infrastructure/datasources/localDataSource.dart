@@ -9,9 +9,9 @@ class LocalDataSource implements ILocalDataSource{
   LocalDataSource({@required this.sharedPreferences});
 
   @override
-  Future<String> getToken() {
-    final token = sharedPreferences.get("token");
-    if(token)
+  Future<String> getToken() async {
+    final token = await sharedPreferences.getString("token");
+    if(token!=null)
       return token;
     else  
       throw CustomException('No se logró recuperar el token');
@@ -28,7 +28,7 @@ class LocalDataSource implements ILocalDataSource{
   }
 
   @override
-  Future<bool> deletToken() async{
+  Future<bool> deleteToken() async{
     try{
       final response = await sharedPreferences.remove("token");
       return response;

@@ -11,17 +11,28 @@ import 'package:aulataller/domain/value_objects/typeOfDocument.dart';
 import 'package:flutter/foundation.dart' show required;
 
 class UserModel extends User{
+  Email email;
+  Password password;
+  AcademicProgram academicProgram;
+  Campus campus;
+  Document document;
+  Name name;
+  Rol rol;
+  Semester semester;
+  TypeOfDocument typeOfDocument;
+  String token;
+  
   UserModel({
-    @required String token,
-    @required Email email,
-    Password password,
-    AcademicProgram academicProgram,
-    Campus campus,
-    @required Document document,
-    @required Name name,
-    @required Rol rol,
-    Semester semester,
-    @required TypeOfDocument typeOfDocument,
+    @required this.token,
+    @required this.email,
+    this.password,
+    this.academicProgram,
+    this.campus,
+    @required this.document,
+    @required this.name,
+    @required this.rol,
+    this.semester,
+    @required this.typeOfDocument,
     });
 
   factory UserModel.fromMap(Map<String,dynamic> map){

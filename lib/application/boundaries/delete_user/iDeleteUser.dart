@@ -1,3 +1,3 @@
 import 'package:aulataller/application/boundaries/iUseCase.dart';
 
-abstract class IDeleteUser extends IUseCase<Null,bool>{}
+abstract class IDeleteUser extends IUseCase<String,bool>{}

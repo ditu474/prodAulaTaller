@@ -12,7 +12,7 @@ class GetLastUserUseCase extends IGetLastUser{
     }) : _authRepository = authRepository;
 
   @override
-  Future<Either<Failure, String>> execute(Null input) async {
+  Future<Either<Failure, String>> execute(String input) async {
     final response = await _authRepository.findLastUser();
 
     return response.fold((l) => Left(l), (r) => Right(r));
