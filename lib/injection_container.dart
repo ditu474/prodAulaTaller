@@ -1,7 +1,14 @@
+import 'package:aulataller/application/boundaries/get_last_user/iGetLastUser.dart';
 import 'package:aulataller/application/boundaries/login_with_credentials/iLoginWithCredentials.dart';
 import 'package:aulataller/application/boundaries/open_dynamic_link/iOpenDynamicLink.dart';
+import 'package:aulataller/application/boundaries/register_user/iRegisterUser.dart';
+import 'package:aulataller/application/boundaries/save_user/iSaveUser.dart';
+import 'package:aulataller/application/usecases/deleteUserUseCase.dart';
+import 'package:aulataller/application/usecases/getLastUserUseCase.dart';
 import 'package:aulataller/application/usecases/loginWithCredentialsUseCase.dart';
 import 'package:aulataller/application/usecases/openDynamicLinkUseCase.dart';
+import 'package:aulataller/application/usecases/registerUserUseCase.dart';
+import 'package:aulataller/application/usecases/saveUserUseCase.dart';
 import 'package:aulataller/domain/repositories/iAuthRepository.dart';
 import 'package:aulataller/infrastructure/datasources/iLocalDataSource.dart';
 import 'package:aulataller/infrastructure/datasources/iRemoteDataSource.dart';
@@ -15,6 +22,8 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'application/boundaries/delete_user/iDeleteUser.dart';
 
 final getIt = GetIt.instance;
 
@@ -38,10 +47,18 @@ Future<void> setup() async{
     localDataSource: getIt<ILocalDataSource>()));
 
   //application
-  getIt.registerLazySingleton<ILoginWithCredentials>(() => 
+  getIt.registerLazySingleton<ILoginWithCredentials>(() =>
   LoginWithCredentialsUseCase(authRepository:getIt<IAuthRepository>()));
-  getIt.registerLazySingleton<IOpenDynamicLink>(() => 
+  getIt.registerLazySingleton<IOpenDynamicLink>(() =>
   OpenDynamicLinkUseCase());
+  getIt.registerLazySingleton<IDeleteUser>(() =>
+  DeleteUserUseCase(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<IGetLastUser>(() =>
+  GetLastUserUseCase(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<IRegisterUser>(() =>
+  RegisterUserUseCase(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<ISaveUser>(() =>
+  SaveUserUseCase(authRepository: getIt<IAuthRepository>()));
 
   //presentation
   getIt.registerFactory<LoginBloc>(()=>LoginBloc(
