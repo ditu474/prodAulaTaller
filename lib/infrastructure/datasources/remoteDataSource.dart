@@ -9,31 +9,27 @@ import 'package:aulataller/infrastructure/models/userModel.dart';
 import 'package:flutter/foundation.dart' show required;
 import 'package:http/http.dart' as http;
 
-class RemoteDataSource implements IRemoteDataSource{
+class RemoteDataSource implements IRemoteDataSource {
   final http.Client client;
-  final String urlAPI = 'http://aulatallerrestfulapp-env.eba-v6d9ykru.us-east-1.elasticbeanstalk.com/';
+  final String urlAPI =
+      'http://aulatallerrestfulapp-env.eba-v6d9ykru.us-east-1.elasticbeanstalk.com/';
 
   RemoteDataSource({@required this.client});
 
   @override
   Future<User> loginWithCredentials({Email email, Password password}) async {
-    try{
-      final response = await client.post(
-        urlAPI+'api/v1/users/login',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          "correo":email.email,
-          "password":password.password
-        })
-      );
-      if(response.statusCode == 200){
+    try {
+      final response = await client.post(urlAPI + 'api/v1/users/login',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body:
+              json.encode({"correo": email.value, "password": password.value}));
+      if (response.statusCode == 200) {
         return UserModel.fromMap(json.decode(response.body));
-      }
-      else
+      } else
         throw CustomException(json.decode(response.body)["message"]);
-    }catch(e){
+    } catch (e) {
       throw CustomException(e.toString());
     }
   }
@@ -51,31 +47,32 @@ class RemoteDataSource implements IRemoteDataSource{
   }
 
   @override
-  Future<User> register({User newUser}) async{
-    try{
-      final response = await client.post(
-        urlAPI+'api/v1/users/signup',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode({
-          "nombre":newUser.name.name,
-          "tipoDocumento":newUser.typeOfDocument.typeOfDocument,
-          "documento":newUser.document.document,
-          "correo":newUser.email.email,
-          "rol":newUser.rol.rol,
-          "sede":newUser.campus!=null ? newUser.campus.campus : null,
-          "programaAcademico":newUser.academicProgram!=null ? newUser.academicProgram.academicProgram : null,
-          "semestre":newUser.semester!=null ? newUser.semester.semester : null,
-          "password":newUser.password.password,
-          "passwordConfirm":newUser.password.password
-        })
-      );
-      if(response.statusCode == 200)
+  Future<User> register({User newUser}) async {
+    try {
+      final response = await client.post(urlAPI + 'api/v1/users/signup',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: json.encode({
+            "nombre": newUser.name.value,
+            "tipoDocumento": newUser.typeOfDocument.value,
+            "documento": newUser.document.value,
+            "correo": newUser.email.value,
+            "rol": newUser.rol.value,
+            "sede": newUser.campus != null ? newUser.campus.value : null,
+            "programaAcademico": newUser.academicProgram != null
+                ? newUser.academicProgram.value
+                : null,
+            "semestre":
+                newUser.semester != null ? newUser.semester.value : null,
+            "password": newUser.password.value,
+            "passwordConfirm": newUser.password.value
+          }));
+      if (response.statusCode == 200)
         return UserModel.fromMap(json.decode(response.body));
       else
         throw CustomException(json.decode(response.body)["message"]);
-    }catch(e){
+    } catch (e) {
       throw CustomException(e.toString());
     }
   }

@@ -6,10 +6,11 @@ import 'package:aulataller/domain/value_objects/name.dart';
 import 'package:aulataller/domain/value_objects/password.dart';
 import 'package:aulataller/domain/value_objects/rol.dart';
 import 'package:aulataller/domain/value_objects/semester.dart';
+import 'package:aulataller/domain/value_objects/token.dart';
 import 'package:aulataller/domain/value_objects/typeOfDocument.dart';
 import 'package:flutter/foundation.dart';
 
-class User{
+class User {
   Email _email;
   Password _password;
   AcademicProgram _academicProgram;
@@ -19,10 +20,10 @@ class User{
   Rol _rol;
   Semester _semester;
   TypeOfDocument _typeOfDocument;
-  String _token;
+  Token _token;
 
   User({
-    String token,
+    Token token,
     @required Email email,
     Password password,
     AcademicProgram academicProgram,
@@ -32,19 +33,18 @@ class User{
     @required Rol rol,
     Semester semester,
     @required TypeOfDocument typeOfDocument,
-    })
-    :this._token=token,
-    this._email=email,
-    this._password=password,
-    this._academicProgram=academicProgram,
-    this._campus=campus,
-    this._document=document,
-    this._name=name,
-    this._rol=rol,
-    this._semester=semester,
-    this._typeOfDocument=typeOfDocument;
+  })  : this._token = token,
+        this._email = email,
+        this._password = password,
+        this._academicProgram = academicProgram,
+        this._campus = campus,
+        this._document = document,
+        this._name = name,
+        this._rol = rol,
+        this._semester = semester,
+        this._typeOfDocument = typeOfDocument;
 
-  String get token => this._token;
+  Token get token => this._token;
 
   Email get email => this._email;
 
@@ -59,7 +59,7 @@ class User{
   Name get name => this._name;
 
   Rol get rol => this._rol;
-  
+
   Semester get semester => this._semester;
 
   TypeOfDocument get typeOfDocument => this._typeOfDocument;

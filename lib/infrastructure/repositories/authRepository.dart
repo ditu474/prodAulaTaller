@@ -9,39 +9,41 @@ import 'package:aulataller/domain/value_objects/failure.dart';
 import 'package:aulataller/domain/value_objects/email.dart';
 import 'package:flutter/foundation.dart' show required;
 
-class AuthRepository implements IAuthRepository{
+class AuthRepository implements IAuthRepository {
   IRemoteDataSource remoteDataSource;
   INetworkInfo networkInfo;
   ILocalDataSource localDataSource;
 
-  AuthRepository({@required this.remoteDataSource,
-  @required this.networkInfo,
-  @required this.localDataSource
-  });
+  AuthRepository(
+      {@required this.remoteDataSource,
+      @required this.networkInfo,
+      @required this.localDataSource});
 
   @override
-  Future<Either<Failure, String>> findLastUser() async{
-    try{
+  Future<Either<Failure, String>> findLastUser() async {
+    try {
       final response = await localDataSource.getToken();
-      if(response!=null)
+      if (response != null)
         return Right(response);
       else
         return Left(Failure('No se encontró usuario'));
-    }catch(e){
+    } catch (e) {
       return Left(Failure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, User>> loginWithCredentials({Email email, Password password}) async{
-    if(await networkInfo.isConnected){
-      try{
-        final response = await remoteDataSource.loginWithCredentials(email: email,password: password);
+  Future<Either<Failure, User>> loginWithCredentials(
+      {Email email, Password password}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response = await remoteDataSource.loginWithCredentials(
+            email: email, password: password);
         return Right(response);
-      }catch(e){
+      } catch (e) {
         return Left(Failure(e.toString()));
       }
-    }else{
+    } else {
       return Left(Failure('No tienes conexión a internet'));
     }
   }
@@ -53,47 +55,48 @@ class AuthRepository implements IAuthRepository{
   }
 
   @override
-  Future<Either<Failure, User>> resetPassword({Password password, String resetToken}) {
+  Future<Either<Failure, User>> resetPassword(
+      {Password password, String resetToken}) {
     // TODO: implement resetPassword
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, User>> register({User newUser}) async{
-    if(await networkInfo.isConnected){
-      try{
+  Future<Either<Failure, User>> register({User newUser}) async {
+    if (await networkInfo.isConnected) {
+      try {
         final response = await remoteDataSource.register(newUser: newUser);
         return Right(response);
-      }catch(e){
+      } catch (e) {
         return Left(Failure(e.toString()));
       }
-    }else{
+    } else {
       return Left(Failure('No tienes conexión a internet'));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> saveLastUser({User user}) async{
-    try{
-      final response = await localDataSource.setToken(token: user.token);
-      if(response)
+  Future<Either<Failure, bool>> saveLastUser({User user}) async {
+    try {
+      final response = await localDataSource.setToken(token: user.token.value);
+      if (response)
         return Right(true);
       else
         return Left(Failure('No se logró guardar el usuario'));
-    }catch(e){
+    } catch (e) {
       return Left(Failure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, bool>> userLogout() async{
-    try{
+  Future<Either<Failure, bool>> userLogout() async {
+    try {
       final response = await localDataSource.deleteToken();
       if (response)
         return Right(true);
       else
         return Left(Failure('No se logró borrar el token'));
-    }catch(e){
+    } catch (e) {
       return Left(Failure(e.toString()));
     }
   }
