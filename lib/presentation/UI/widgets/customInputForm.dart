@@ -8,9 +8,9 @@ class CustomInputForm extends StatelessWidget {
   final Function onChangeFunction;
   final TextInputType keyboard;
   final String errorMsg;
-  
+
   const CustomInputForm({
-    Key key, 
+    Key key,
     @required this.obscure,
     @required this.icon,
     @required this.hint,
@@ -23,29 +23,25 @@ class CustomInputForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final IResponsive responsive = Responsive.of(context);
     return Container(
-      decoration:BoxDecoration(
-        color: Color(0XFFFFFF).withOpacity(0.3),
-        borderRadius: BorderRadius.circular(responsive.inchPercent(3))
-      ),
+      decoration: BoxDecoration(
+          color: Color(0XFFFFFF).withOpacity(0.3),
+          borderRadius: BorderRadius.circular(responsive.inchPercent(3))),
       child: TextFormField(
         keyboardType: keyboard,
         obscureText: obscure,
-        style:TextStyle(
-          color:Colors.white,
-          fontWeight: FontWeight.bold,
-          fontSize:responsive.inchPercent(1.7)
-        ),
+        style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: responsive.inchPercent(2)),
         decoration: InputDecoration(
           errorText: errorMsg,
-          suffixIcon: Icon(icon,color:Colors.white),
-          errorStyle: TextStyle(
-            height:1
-          ),
-          border:InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical:16,horizontal:25),
+          suffixIcon: Icon(icon, color: Colors.white),
+          errorStyle: TextStyle(height: 1),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 25),
           hintText: hint,
           hintStyle: TextStyle(
-            fontSize:responsive.inchPercent(1.7),
+            fontSize: responsive.inchPercent(1.9),
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),

@@ -17,6 +17,7 @@ import 'package:aulataller/infrastructure/datasources/remoteDataSource.dart';
 import 'package:aulataller/infrastructure/repositories/authRepository.dart';
 import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:aulataller/presentation/states/login/login_bloc.dart';
+import 'package:aulataller/presentation/states/register/register_bloc.dart';
 import 'package:aulataller/utils/networkInfo.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
@@ -28,45 +29,53 @@ import 'application/boundaries/delete_user/iDeleteUser.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> setup() async{
+Future<void> setup() async {
   //external
   getIt.registerLazySingleton<Client>(() => http.Client());
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
-  getIt.registerLazySingleton<DataConnectionChecker>(() => DataConnectionChecker());
+  getIt.registerLazySingleton<DataConnectionChecker>(
+      () => DataConnectionChecker());
 
   //utils
-  getIt.registerLazySingleton<INetworkInfo>(()=> NetworkInfo(getIt<DataConnectionChecker>()));
+  getIt.registerLazySingleton<INetworkInfo>(
+      () => NetworkInfo(getIt<DataConnectionChecker>()));
 
   //infrastructure
-  getIt.registerLazySingleton<IRemoteDataSource>(() => RemoteDataSource(client: getIt<Client>()));
+  getIt.registerLazySingleton<IRemoteDataSource>(
+      () => RemoteDataSource(client: getIt<Client>()));
   getIt.registerLazySingleton<ILocalDataSource>(
-    () =>LocalDataSource(sharedPreferences: getIt<SharedPreferences>()));
-  getIt.registerLazySingleton<IAuthRepository>(()=> AuthRepository(
-    networkInfo: getIt<INetworkInfo>(),
-    remoteDataSource: getIt<IRemoteDataSource>(), 
-    localDataSource: getIt<ILocalDataSource>()));
+      () => LocalDataSource(sharedPreferences: getIt<SharedPreferences>()));
+  getIt.registerLazySingleton<IAuthRepository>(() => AuthRepository(
+      networkInfo: getIt<INetworkInfo>(),
+      remoteDataSource: getIt<IRemoteDataSource>(),
+      localDataSource: getIt<ILocalDataSource>()));
 
   //application
   getIt.registerLazySingleton<ILoginWithCredentials>(() =>
-  LoginWithCredentialsUseCase(authRepository:getIt<IAuthRepository>()));
-  getIt.registerLazySingleton<IOpenDynamicLink>(() =>
-  OpenDynamicLinkUseCase());
-  getIt.registerLazySingleton<IDeleteUser>(() =>
-  DeleteUserUseCase(authRepository: getIt<IAuthRepository>()));
-  getIt.registerLazySingleton<IGetLastUser>(() =>
-  GetLastUserUseCase(authRepository: getIt<IAuthRepository>()));
-  getIt.registerLazySingleton<IRegisterUser>(() =>
-  RegisterUserUseCase(authRepository: getIt<IAuthRepository>()));
-  getIt.registerLazySingleton<ISaveUser>(() =>
-  SaveUserUseCase(authRepository: getIt<IAuthRepository>()));
+      LoginWithCredentialsUseCase(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<IOpenDynamicLink>(() => OpenDynamicLinkUseCase());
+  getIt.registerLazySingleton<IDeleteUser>(
+      () => DeleteUserUseCase(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<IGetLastUser>(
+      () => GetLastUserUseCase(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<IRegisterUser>(
+      () => RegisterUserUseCase(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<ISaveUser>(
+      () => SaveUserUseCase(authRepository: getIt<IAuthRepository>()));
 
   //presentation
-  getIt.registerFactory<LoginBloc>(()=>LoginBloc(
-    loginWithCredentials: getIt<ILoginWithCredentials>(),
-    openDynamicLink: getIt<IOpenDynamicLink>(),
-    saveUser: getIt<ISaveUser>()));
-  getIt.registerFactory<AuthBloc>(()=>AuthBloc(
-    deleteLastUser: getIt<IDeleteUser>(),
-    getLastUser: getIt<IGetLastUser>()));
+  getIt.registerFactory<LoginBloc>(() => LoginBloc(
+      loginWithCredentials: getIt<ILoginWithCredentials>(),
+      openDynamicLink: getIt<IOpenDynamicLink>(),
+      saveUser: getIt<ISaveUser>()));
+  getIt.registerFactory<AuthBloc>(() => AuthBloc(
+      deleteLastUser: getIt<IDeleteUser>(),
+      getLastUser: getIt<IGetLastUser>()));
+  getIt.registerFactory<RegisterBloc>(
+    () => RegisterBloc(
+      registerUser: getIt<IRegisterUser>(),
+      saveUser: getIt<ISaveUser>(),
+    ),
+  );
 }

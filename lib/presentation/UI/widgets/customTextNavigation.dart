@@ -6,8 +6,8 @@ class CustomTextNavigation extends StatelessWidget {
   final Function onTap;
 
   const CustomTextNavigation({
-    Key key, 
-    @required this.text, 
+    Key key,
+    @required this.text,
     @required this.onTap,
   }) : super(key: key);
 
@@ -20,14 +20,14 @@ class CustomTextNavigation extends StatelessWidget {
         padding: EdgeInsets.all(responsive.inchPercent(0.6)),
         child: Text(
           text,
-          style:TextStyle(
-            fontSize: responsive.inchPercent(1.72),
-            fontWeight: FontWeight.w500,
+          style: TextStyle(
+            fontSize: responsive.inchPercent(1.8),
+            fontWeight: FontWeight.bold,
             color: Colors.white,
-            letterSpacing: 1
-          )
+            letterSpacing: 0.5,
+          ),
         ),
-      )
+      ),
     );
   }
 }

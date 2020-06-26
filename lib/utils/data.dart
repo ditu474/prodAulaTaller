@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 
-const ITEMSTIPODOCUMENTO = const [
+const ITEMSTYPEOFDOCUMENTS = const [
   DropdownMenuItem(child: Text('Tarjeta de identidad'), value: "TI"),
-  DropdownMenuItem(child: Text('Cedula'), value: "CC"),
-  DropdownMenuItem(child: Text('Cedula de extranjeria'), value: "CE"),
+  DropdownMenuItem(child: Text('Cédula'), value: "CC"),
+  DropdownMenuItem(child: Text('Cédula de extranjería'), value: "CE"),
   DropdownMenuItem(child: Text('Pasaporte'), value: "Pasaporte"),
 ];
 
-const ITEMSPERFIL = const [
+const ITEMSROLES = const [
   DropdownMenuItem(child: Text('Estudiante'), value: "estudiante"),
   DropdownMenuItem(child: Text('Docente'), value: "docente"),
   DropdownMenuItem(child: Text('Externo al Politécnico JIC'), value: "externo"),
 ];
 
-const ITEMSSEDES = const [
-  DropdownMenuItem(child: Text('Medellin'), value: "medellin"),
+const ITEMSCAMPUS = const [
+  DropdownMenuItem(child: Text('Medellín'), value: "medellin"),
   DropdownMenuItem(child: Text('Oriente'), value: "oriente"),
-  DropdownMenuItem(child: Text('Uraba'), value: "uraba"),
+  DropdownMenuItem(child: Text('Urabá'), value: "uraba"),
 ];
 
-const ITEMSNIVELACADEMICO = const [
+const ITEMSONETOTEN = const [
   DropdownMenuItem(child: Text('1'), value: 1),
   DropdownMenuItem(child: Text('2'), value: 2),
   DropdownMenuItem(child: Text('3'), value: 3),
@@ -32,20 +32,7 @@ const ITEMSNIVELACADEMICO = const [
   DropdownMenuItem(child: Text('10'), value: 10),
 ];
 
-const ITEMSVALORACION = const [
-  DropdownMenuItem(child: Text('1'), value: 1),
-  DropdownMenuItem(child: Text('2'), value: 2),
-  DropdownMenuItem(child: Text('3'), value: 3),
-  DropdownMenuItem(child: Text('4'), value: 4),
-  DropdownMenuItem(child: Text('5'), value: 5),
-  DropdownMenuItem(child: Text('6'), value: 6),
-  DropdownMenuItem(child: Text('7'), value: 7),
-  DropdownMenuItem(child: Text('8'), value: 8),
-  DropdownMenuItem(child: Text('9'), value: 9),
-  DropdownMenuItem(child: Text('10'), value: 10),
-];
-
-const ITEMSPROGRAMAACADEMICO = const [
+const ITEMSACADEMICPROGRAM = const [
   DropdownMenuItem(
       child: Text('Técnica Profesional en Masoterapia'),
       value: 'Tecnica Profesional en Masoterapia'),
@@ -125,4 +112,5 @@ const ITEMSPROGRAMAACADEMICO = const [
       value: 'Ingenieria en Instrumentacion y Control'),
   DropdownMenuItem(
       child: Text('Ingenieria Informatica'), value: 'Ingenieria Informatica'),
+  DropdownMenuItem(child: Text('Otro'), value: 'Otro'),
 ];

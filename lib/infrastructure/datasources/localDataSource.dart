@@ -3,36 +3,36 @@ import 'package:aulataller/infrastructure/models/exception.dart';
 import 'package:flutter/foundation.dart' show required;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalDataSource implements ILocalDataSource{
+class LocalDataSource implements ILocalDataSource {
   final SharedPreferences sharedPreferences;
 
   LocalDataSource({@required this.sharedPreferences});
 
   @override
   Future<String> getToken() async {
-    final token = await sharedPreferences.getString("token");
-    if(token!=null)
+    final token = sharedPreferences.getString("token");
+    if (token != null)
       return token;
-    else  
+    else
       throw CustomException('No se logró recuperar el token');
   }
 
   @override
   Future<bool> setToken({@required String token}) async {
-    try{
+    try {
       final response = await sharedPreferences.setString("token", token);
       return response;
-    }catch(e){
+    } catch (e) {
       throw CustomException('No se logró guardar el token');
     }
   }
 
   @override
-  Future<bool> deleteToken() async{
-    try{
+  Future<bool> deleteToken() async {
+    try {
       final response = await sharedPreferences.remove("token");
       return response;
-    }catch(e){
+    } catch (e) {
       throw CustomException('No se logró borrar el token');
     }
   }
