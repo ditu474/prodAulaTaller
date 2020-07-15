@@ -12,7 +12,7 @@ import 'package:equatable/equatable.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart' show required;
 
-class RegisterUserInput extends Equatable{
+class RegisterUserInput extends Equatable {
   final Email email;
   final Password password;
   final AcademicProgram academicProgram;
@@ -23,48 +23,59 @@ class RegisterUserInput extends Equatable{
   final Semester semester;
   final TypeOfDocument typeOfDocument;
 
-  RegisterUserInput._({
-    this.email,
-    this.password,
-    this.academicProgram,
-    this.campus,
-    this.document,
-    this.name,
-    this.rol,
-    this.semester,
-    this.typeOfDocument
-  });
+  RegisterUserInput._(
+      {this.email,
+      this.password,
+      this.academicProgram,
+      this.campus,
+      this.document,
+      this.name,
+      this.rol,
+      this.semester,
+      this.typeOfDocument});
 
-  static Either<Failure,RegisterUserInput> createFromInputs({
-    @required String email,
-    @required String password,
-    String academicProgram,
-    String campus,
-    dynamic document,
-    @required String name,
-    @required String rol,
-    int semester,
-    @required typeOfDocument
-  }){
-    if(email==null || password==null || name==null || rol==null || typeOfDocument==null){
+  static Either<Failure, RegisterUserInput> createFromInputs(
+      {@required String email,
+      @required String password,
+      String academicProgram,
+      String campus,
+      dynamic document,
+      @required String name,
+      @required String rol,
+      int semester,
+      @required typeOfDocument}) {
+    if (email == null ||
+        password == null ||
+        name == null ||
+        rol == null ||
+        typeOfDocument == null) {
       return Left(Failure('Invalid inputs'));
-    }else{
+    } else {
       return Right(RegisterUserInput._(
-        typeOfDocument:TypeOfDocument.create(typeOfDocument).getOrElse(null),
-        semester: Semester.create(semester).getOrElse(null),
-        rol: Rol.create(rol).getOrElse(null),
-        password: Password.create(password).getOrElse(null),
-        name: Name.create(name).getOrElse(null),
-        academicProgram: AcademicProgram.create(academicProgram).getOrElse(null),
-        email: Email.create(email).getOrElse(null),
-        campus: Campus.create(campus).getOrElse(null),
-        document: Document.create(document).getOrElse(null)
-        )
-      );
+          typeOfDocument:
+              TypeOfDocument.create(typeOfDocument).fold((l) => null, (r) => r),
+          semester: Semester.create(semester).fold((l) => null, (r) => r),
+          rol: Rol.create(rol).fold((l) => null, (r) => r),
+          password: Password.create(password).fold((l) => null, (r) => r),
+          name: Name.create(name).fold((l) => null, (r) => r),
+          academicProgram: AcademicProgram.create(academicProgram)
+              .fold((l) => null, (r) => r),
+          email: Email.create(email).fold((l) => null, (r) => r),
+          campus: Campus.create(campus).fold((l) => null, (r) => r),
+          document: Document.create(document).fold((l) => null, (r) => r)));
     }
   }
 
   @override
-  List<Object> get props => [email,password,academicProgram,campus,document,
-  name,rol,semester,typeOfDocument];
+  List<Object> get props => [
+        email,
+        password,
+        academicProgram,
+        campus,
+        document,
+        name,
+        rol,
+        semester,
+        typeOfDocument
+      ];
 }

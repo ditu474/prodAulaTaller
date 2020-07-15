@@ -12,36 +12,37 @@ class SocialMedia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final IResponsive responsive = Responsive.of(context);
-    return BlocConsumer<LoginBloc,LoginState>(
-        listener:(context, state){
-          if(state.linkError){
-            _showSnackBar(background: Colors.red,
+    return BlocConsumer<LoginBloc, LoginState>(listener: (context, state) {
+      if (state.linkError) {
+        _showSnackBar(
+            background: Colors.red,
             ctx: context,
             leftWidget: Text(state.error),
             rightWidget: Icon(Icons.block));
-          }
-        },
-        builder:(context, state){
-          return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            SVGButton(
-              tapHandler: (){
-                context.bloc<LoginBloc>().add(FacebookButtonPressed());
-              },
-              size: responsive.inchPercent(6.3),
-              url: "https://image.flaticon.com/icons/svg/1312/1312139.svg"
-            ),
-            SVGButton(
-              tapHandler: (){
-                context.bloc<LoginBloc>().add(InstagramButtonPressed());
-              },
-              size: responsive.inchPercent(6.3),
-              url: "https://image.flaticon.com/icons/svg/1384/1384015.svg"
-            ),
-          ],
-        );
       }
-    );
+    }, builder: (context, state) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          SVGButton(
+            tapHandler: () {
+              context.bloc<LoginBloc>().add(FacebookButtonPressed());
+            },
+            size: responsive.inchPercent(6.3),
+            url: "assets/icons/1312139.svg",
+            label: 'Facebook',
+          ),
+          SVGButton(
+            tapHandler: () {
+              context.bloc<LoginBloc>().add(InstagramButtonPressed());
+            },
+            size: responsive.inchPercent(6.3),
+            url: "assets/icons/1384015.svg",
+            label: 'Instagram',
+          ),
+        ],
+      );
+    });
   }
 }
 
@@ -50,19 +51,14 @@ void _showSnackBar({
   @required Color background,
   @required Widget leftWidget,
   @required Widget rightWidget,
-  }){
-    Scaffold.of(ctx)
+}) {
+  Scaffold.of(ctx)
     ..hideCurrentSnackBar()
-    ..showSnackBar(
-      SnackBar(
-        content: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            leftWidget,
-            rightWidget
-          ],
-        ),
-        backgroundColor: background,
-      )
-    );
-  }
+    ..showSnackBar(SnackBar(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[leftWidget, rightWidget],
+      ),
+      backgroundColor: background,
+    ));
+}

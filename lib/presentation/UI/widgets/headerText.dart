@@ -16,13 +16,12 @@ class HeaderText extends StatelessWidget {
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(
         left: responsive.widthPercent(5),
-        top: responsive.heigthPercent(2),
       ),
       child: Text(
         text,
         style: TextStyle(
           decoration: TextDecoration.none,
-          fontSize: responsive.inchPercent(5),
+          fontSize: responsive.inchPercent(4),
           fontWeight: FontWeight.w500,
           letterSpacing: 0.8,
           color: Colors.black,

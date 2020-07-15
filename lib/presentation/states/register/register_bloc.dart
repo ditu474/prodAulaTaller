@@ -57,19 +57,18 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     } else if (event is RegisterUserConfirmed) {
       if (state.status.isValidated) {
         yield state.copyWith(status: FormzStatus.submissionInProgress);
-        bool validateStudent = state.typeOfUser.value == "estudiante";
-        bool validateTeacher = state.typeOfUser.value == "docente";
+        bool isStudent = state.typeOfUser.value == "estudiante";
+        bool isTeacher = state.typeOfUser.value == "docente";
         yield* _mapRegisterToState(
-          academicProgram: validateStudent ? state.academicProgram.value : null,
+          academicProgram: isStudent ? state.academicProgram?.value : null,
           typeOfUser: state.typeOfUser.value,
-          typeOfDocument: state.typeOfDocument.value,
-          semester: validateStudent ? state.semester.value : null,
+          typeOfDocument: state.typeOfDocument?.value,
+          semester: isStudent ? state.semester?.value : null,
           password: state.password.value,
           name: state.name.value,
           email: state.email.value,
           document: state.document.value,
-          campus:
-              validateStudent || validateTeacher ? state.campus.value : null,
+          campus: isStudent || isTeacher ? state.campus?.value : null,
         );
       }
     }
@@ -184,7 +183,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   Stream<RegisterState> _mapDocumentChangedToState(
       String eventDocument) async* {
-    final document = Document.dirty(eventDocument);
+    final document = Document.dirty(
+      value: eventDocument,
+      typeOfDocument: state.typeOfDocument.value,
+    );
     yield state.copyWith(
       document: document,
       status: Formz.validate([
@@ -248,15 +250,18 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     final typeOfDocument = TypeOfDocument.dirty(
       eventTypeOfDocument,
     );
+    final document = Document.dirty(
+        value: state.document.value, typeOfDocument: typeOfDocument.value);
     yield state.copyWith(
       typeOfDocument: typeOfDocument,
+      document: document,
       status: Formz.validate([
         state.email,
         state.password,
         state.academicProgram,
         state.campus,
         state.confirmPassword,
-        state.document,
+        document,
         state.name,
         state.semester,
         typeOfDocument,

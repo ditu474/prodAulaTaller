@@ -19,7 +19,8 @@ class TopBackArrow extends StatelessWidget {
           Navigator.of(context).pop();
         },
         child: Icon(
-          Icons.arrow_back_ios,
+          Icons.arrow_back,
+          size: responsive.inchPercent(3.3),
         ),
       ),
     );
