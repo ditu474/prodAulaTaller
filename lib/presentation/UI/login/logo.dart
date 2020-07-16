@@ -11,9 +11,9 @@ class Logo extends StatelessWidget {
     final IResponsive responsive = Responsive.of(context);
     return Container(
         margin: EdgeInsets.only(
-          top: responsive.heigthPercent(4.5),
+          top: responsive.heigthPercent(3),
         ),
-        height: responsive.heigthPercent(23.5),
+        height: responsive.heigthPercent(25),
         child: Image.asset('assets/images/logo.png'));
   }
 }

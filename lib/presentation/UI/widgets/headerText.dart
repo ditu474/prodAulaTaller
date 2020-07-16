@@ -21,9 +21,9 @@ class HeaderText extends StatelessWidget {
         text,
         style: TextStyle(
           decoration: TextDecoration.none,
-          fontSize: responsive.inchPercent(4),
+          fontSize: responsive.inchPercent(4.5),
           fontWeight: FontWeight.w500,
-          letterSpacing: 0.8,
+          letterSpacing: 0.3,
           color: Colors.black,
         ),
       ),

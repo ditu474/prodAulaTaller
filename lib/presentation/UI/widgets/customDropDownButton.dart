@@ -25,14 +25,14 @@ class CustomDropDownButton extends StatelessWidget {
         Text(
           tittle,
           style: TextStyle(
-            fontSize: responsive.inchPercent(2),
+            fontSize: responsive.inchPercent(2.1),
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
         Container(
-          padding: EdgeInsets.all(
-            responsive.inchPercent(0.5),
+          padding: EdgeInsets.symmetric(
+            horizontal: responsive.inchPercent(0.5),
           ),
           margin: EdgeInsets.only(
             top: responsive.heigthPercent(0.5),
@@ -50,21 +50,23 @@ class CustomDropDownButton extends StatelessWidget {
               ),
             ),
           ),
-          child: DropdownButton(
-            icon: Icon(
-              Icons.arrow_drop_down_circle,
-              color: Colors.white,
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton(
+              icon: Icon(
+                Icons.arrow_drop_down_circle,
+                color: Colors.white,
+              ),
+              value: value,
+              isExpanded: true,
+              dropdownColor: Colors.green[300],
+              style: TextStyle(
+                fontSize: responsive.inchPercent(2.1),
+                color: Colors.white,
+              ),
+              onChanged: onChange,
+              isDense: true,
+              items: items,
             ),
-            value: value,
-            isExpanded: true,
-            dropdownColor: Colors.green[300],
-            style: TextStyle(
-              fontSize: responsive.inchPercent(1.9),
-              color: Colors.white,
-            ),
-            onChanged: onChange,
-            isDense: true,
-            items: items,
           ),
         ),
       ],

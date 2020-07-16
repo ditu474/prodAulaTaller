@@ -30,7 +30,6 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
           );
         } else if (state.status.isSubmissionFailure) {
-          print(state.error);
           _showSnackBar(
               ctx: context,
               background: Colors.red,
@@ -212,7 +211,8 @@ class _RegisterFormState extends State<RegisterForm> {
               GradientButton(
                 inputText: 'Registrarme',
                 buttonHandler: () {
-                  if (!state.status.isSubmissionInProgress) {
+                  if (!state.status.isSubmissionInProgress &&
+                      state.status.isValidated) {
                     context.bloc<RegisterBloc>().add(RegisterUserConfirmed());
                   }
                 },

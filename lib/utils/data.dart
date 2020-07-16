@@ -32,7 +32,7 @@ const ITEMSONETOTEN = const [
   DropdownMenuItem(child: Text('10'), value: 10),
 ];
 
-const ITEMSACADEMICPROGRAM = const [
+const ITEMSACADEMICPROGRAM = [
   DropdownMenuItem(
       child: Text('Técnica Profesional en Masoterapia'),
       value: 'Tecnica Profesional en Masoterapia'),
@@ -93,7 +93,8 @@ const ITEMSACADEMICPROGRAM = const [
       value: 'Comunicacion Audiovisual'),
   DropdownMenuItem(
       child: Text(
-          'Licenciatura en Educación Básica con Énfasis en Educación Física, Recreación y Deportes'),
+        'Licenciatura en Educación Básica con Énfasis en Educación Física, Recreación y Deportes',
+      ),
       value:
           'Licenciatura en Educacion Basica con Enfasis en Educación Fisica, Recreacion y Deportes'),
   DropdownMenuItem(

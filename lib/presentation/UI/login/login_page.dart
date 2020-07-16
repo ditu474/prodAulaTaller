@@ -52,12 +52,12 @@ class Body extends StatelessWidget {
                 children: <Widget>[
                   const Logo(),
                   const LoginForm(),
-                  SizedBox(height: responsive.heigthPercent(2.5)),
+                  SizedBox(height: responsive.heigthPercent(2)),
                   CustomTextNavigation(
                     text: 'Olvidaste tu contraseña?',
                     onTap: () {},
                   ),
-                  SizedBox(height: responsive.heigthPercent(1.2)),
+                  SizedBox(height: responsive.heigthPercent(1)),
                   CustomTextNavigation(
                     text: 'Crear una cuenta nueva',
                     onTap: () {
@@ -67,7 +67,7 @@ class Body extends StatelessWidget {
                       );
                     },
                   ),
-                  SizedBox(height: responsive.heigthPercent(2.7)),
+                  SizedBox(height: responsive.heigthPercent(2.2)),
                   SocialMedia(),
                 ],
               ),

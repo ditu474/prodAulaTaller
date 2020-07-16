@@ -21,7 +21,7 @@ class CustomTextNavigation extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            fontSize: responsive.inchPercent(1.8),
+            fontSize: responsive.inchPercent(2.1),
             fontWeight: FontWeight.bold,
             color: Colors.white,
             letterSpacing: 0.5,

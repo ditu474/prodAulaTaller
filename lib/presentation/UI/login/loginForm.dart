@@ -44,9 +44,10 @@ class _LoginFormState extends State<LoginForm> {
         return Container(
           margin: EdgeInsets.only(top: responsive.heigthPercent(2.3)),
           padding: EdgeInsets.only(
-              top: responsive.heigthPercent(6),
-              right: responsive.widthPercent(5),
-              left: responsive.widthPercent(5)),
+            top: responsive.heigthPercent(4),
+            right: responsive.widthPercent(5),
+            left: responsive.widthPercent(5),
+          ),
           child: Column(children: [
             CustomInputForm(
               hint: 'Email',
@@ -73,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
                 context.bloc<LoginBloc>().add(PasswordChanged(password: value));
               },
             ),
-            SizedBox(height: responsive.heigthPercent(6)),
+            SizedBox(height: responsive.heigthPercent(5)),
             GradientButton(
                 inputText: 'Ingresar',
                 buttonHandler: () {

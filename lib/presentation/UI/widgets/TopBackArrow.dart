@@ -20,7 +20,7 @@ class TopBackArrow extends StatelessWidget {
         },
         child: Icon(
           Icons.arrow_back,
-          size: responsive.inchPercent(3.3),
+          size: responsive.inchPercent(4),
         ),
       ),
     );

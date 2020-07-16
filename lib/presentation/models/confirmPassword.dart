@@ -9,10 +9,8 @@ class ConfirmPassword
   const ConfirmPassword.dirty({this.password = "", String value = ''})
       : super.dirty(value);
 
-  bool validate(String value) => this.password == value;
-
   @override
   ConfirmPasswordValidationError validator(String value) {
-    return validate(value) ? null : ConfirmPasswordValidationError.invalid;
+    return value == password ? null : ConfirmPasswordValidationError.invalid;
   }
 }

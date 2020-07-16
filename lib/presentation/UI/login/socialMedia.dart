@@ -28,7 +28,7 @@ class SocialMedia extends StatelessWidget {
             tapHandler: () {
               context.bloc<LoginBloc>().add(FacebookButtonPressed());
             },
-            size: responsive.inchPercent(6.3),
+            size: responsive.inchPercent(7),
             url: "assets/icons/1312139.svg",
             label: 'Facebook',
           ),
@@ -36,7 +36,7 @@ class SocialMedia extends StatelessWidget {
             tapHandler: () {
               context.bloc<LoginBloc>().add(InstagramButtonPressed());
             },
-            size: responsive.inchPercent(6.3),
+            size: responsive.inchPercent(7),
             url: "assets/icons/1384015.svg",
             label: 'Instagram',
           ),

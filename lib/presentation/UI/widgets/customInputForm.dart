@@ -23,25 +23,31 @@ class CustomInputForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final IResponsive responsive = Responsive.of(context);
     return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: responsive.inchPercent(2),
+      ),
       decoration: BoxDecoration(
-          color: Color(0XFFFFFF).withOpacity(0.3),
-          borderRadius: BorderRadius.circular(responsive.inchPercent(3))),
+        color: Color(0XFFFFFF).withOpacity(0.3),
+        borderRadius: BorderRadius.circular(
+          responsive.inchPercent(3),
+        ),
+      ),
       child: TextFormField(
         keyboardType: keyboard,
         obscureText: obscure,
         style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: responsive.inchPercent(2)),
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: responsive.inchPercent(2.1),
+        ),
         decoration: InputDecoration(
           errorText: errorMsg,
           suffixIcon: Icon(icon, color: Colors.white),
           errorStyle: TextStyle(height: 1),
           border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 25),
           hintText: hint,
           hintStyle: TextStyle(
-            fontSize: responsive.inchPercent(1.9),
+            fontSize: responsive.inchPercent(2.1),
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),

@@ -96,14 +96,19 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   Stream<RegisterState> _mapPasswordChangedToState(
       String eventPassword) async* {
     final password = Password.dirty(eventPassword);
+    final confirmPassword = ConfirmPassword.dirty(
+      value: state.confirmPassword.value,
+      password: eventPassword,
+    );
     yield state.copyWith(
       password: password,
+      confirmPassword: confirmPassword,
       status: Formz.validate([
         state.email,
         password,
         state.academicProgram,
         state.campus,
-        state.confirmPassword,
+        confirmPassword,
         state.document,
         state.name,
         state.semester,
