@@ -8,42 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final IResponsive responsive = Responsive.of(context);
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is AuthenticationSuccess) {
-          return Scaffold(
-            body: SafeArea(
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: responsive.widthPercent(5),
-                  vertical: responsive.heigthPercent(2),
-                ),
-                width: responsive.widthPercent(100),
-                height: responsive.heigthPercent(100),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.grey[300],
-                      Colors.grey[500],
-                      Colors.grey[300],
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Column(
-                    children: <Widget>[
-                      ServicesSection(),
-                      UtilitySection(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
+          return Body();
         }
         return Center(
           child: Column(
@@ -65,6 +33,49 @@ class HomePage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class Body extends StatelessWidget {
+  const Body({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final IResponsive responsive = Responsive.of(context);
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: responsive.widthPercent(5),
+            vertical: responsive.heigthPercent(2),
+          ),
+          width: responsive.widthPercent(100),
+          height: responsive.heigthPercent(100),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.grey[300],
+                Colors.grey[500],
+                Colors.grey[300],
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: <Widget>[
+                ServicesSection(),
+                UtilitySection(ctx: context),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

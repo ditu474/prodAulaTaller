@@ -27,17 +27,11 @@ class SectionGroup extends StatelessWidget {
           color: Colors.black,
         ),
         SizedBox(height: responsive.heigthPercent(2)),
-        IgnorePointer(
-          child: GridView.builder(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 0.9,
-            ),
-            itemBuilder: (_, index) => items[index],
-            itemCount: items.length,
-          ),
+        GridView.count(
+          primary: false,
+          crossAxisCount: 3,
+          children: items,
+          shrinkWrap: true,
         ),
       ],
     );

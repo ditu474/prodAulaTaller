@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UtilitySection extends StatelessWidget {
+  final BuildContext ctx;
   UtilitySection({
     Key key,
+    @required this.ctx,
   }) : super(key: key);
 
   @override
@@ -44,9 +46,13 @@ class UtilitySection extends StatelessWidget {
       ),
     ];
 
-    return SectionGroup(
-      tittle: 'Utilidades',
-      items: sectionsItems,
+    return Column(
+      children: <Widget>[
+        SectionGroup(
+          tittle: 'Utilidades',
+          items: sectionsItems,
+        ),
+      ],
     );
   }
 }
