@@ -236,7 +236,10 @@ void _showSnackBar({
     ..showSnackBar(SnackBar(
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[leftWidget, rightWidget],
+        children: <Widget>[
+          Flexible(child: leftWidget),
+          rightWidget,
+        ],
       ),
       backgroundColor: background,
     ));

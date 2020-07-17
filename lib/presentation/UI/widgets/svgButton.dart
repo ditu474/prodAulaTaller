@@ -24,7 +24,6 @@ class SVGButton extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.white,
             boxShadow: [
               BoxShadow(
                 color: Colors.black,

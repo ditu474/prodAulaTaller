@@ -59,7 +59,9 @@ flutter:
     - assets/images/logo.png
     - assets/icons/1384015.svg
     - assets/icons/1312139.svg
-  #   - images/a_dot_ham.jpeg
+    - assets/icons/aula_abierta.svg
+    - assets/icons/sabios_al_gratin.svg
+    - assets/icons/psicopedagogico.svg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
