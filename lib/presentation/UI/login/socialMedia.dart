@@ -29,7 +29,7 @@ class SocialMedia extends StatelessWidget {
               context.bloc<LoginBloc>().add(FacebookButtonPressed());
             },
             size: responsive.inchPercent(7),
-            url: "assets/icons/1312139.svg",
+            url: "assets/icons/facebook.svg",
             label: 'Facebook',
           ),
           SVGButton(
@@ -37,7 +37,7 @@ class SocialMedia extends StatelessWidget {
               context.bloc<LoginBloc>().add(InstagramButtonPressed());
             },
             size: responsive.inchPercent(7),
-            url: "assets/icons/1384015.svg",
+            url: "assets/icons/instagram.svg",
             label: 'Instagram',
           ),
         ],

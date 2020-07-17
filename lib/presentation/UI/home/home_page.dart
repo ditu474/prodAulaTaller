@@ -1,4 +1,5 @@
 import 'package:aulataller/presentation/UI/home/servicesSection.dart';
+import 'package:aulataller/presentation/UI/home/utilitySection.dart';
 import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:aulataller/utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,8 @@ class HomePage extends StatelessWidget {
                   horizontal: responsive.widthPercent(5),
                   vertical: responsive.heigthPercent(2),
                 ),
-                width: double.infinity,
-                height: double.infinity,
+                width: responsive.widthPercent(100),
+                height: responsive.heigthPercent(100),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -34,9 +35,9 @@ class HomePage extends StatelessWidget {
                 child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       ServicesSection(),
+                      UtilitySection(),
                     ],
                   ),
                 ),

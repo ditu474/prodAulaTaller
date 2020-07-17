@@ -23,6 +23,7 @@ class SVGButton extends StatelessWidget {
         constraints: BoxConstraints(maxWidth: 100, maxHeight: 100),
         child: Container(
           decoration: BoxDecoration(
+            color: Colors.white,
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(

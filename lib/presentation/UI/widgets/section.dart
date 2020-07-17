@@ -26,8 +26,7 @@ class Section extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            margin:
-                EdgeInsets.symmetric(horizontal: responsive.widthPercent(2)),
+            margin: EdgeInsets.all(responsive.widthPercent(1)),
             height: responsive.heigthPercent(11),
             width: responsive.heigthPercent(11),
             padding: EdgeInsets.all(6),
