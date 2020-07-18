@@ -23,38 +23,51 @@ class AulaAbiertaBloc extends Bloc<AulaAbiertaEvent, AulaAbiertaState> {
         _getAulaAbiertaServices = getAulaAbiertaServices;
 
   @override
-  AulaAbiertaState get initialState => AulaAbiertaInitial();
+  AulaAbiertaState get initialState => AulaAbiertaState();
 
   @override
   Stream<AulaAbiertaState> mapEventToState(
     AulaAbiertaEvent event,
   ) async* {
     if (event is FetchServices) {
-      yield AulaAbiertaLoading();
+      yield state.copyWith(loading: true);
       yield* _mapFetchServicesState();
     } else if (event is ItemPressed) {
-      yield AulaAbiertaLoading();
+      yield state.copyWith(loading: true);
       yield* _mapItemPressedState(event.link);
     }
   }
 
   Stream<AulaAbiertaState> _mapFetchServicesState() async* {
     final response = await _getAulaAbiertaServices.execute(null);
+    print('call');
     if (response.isLeft()) {
-      yield AulaAbiertaFailure(response.fold((l) => l.message, (r) => null));
+      yield state.copyWith(
+        error: response.fold((l) => l.message, (r) => null),
+        loading: false,
+      );
     } else if (response.isRight()) {
-      yield AulaAbiertaSuccess(response.getOrElse(null));
+      yield state.copyWith(
+        services: response.getOrElse(null),
+        loading: false,
+        error: '',
+      );
     }
   }
 
   Stream<AulaAbiertaState> _mapItemPressedState(String link) async* {
     if (link == null) {
-      yield AulaAbiertaFailure(
-          "Este servicio no tiene una reunión de Google Meet asociada");
+      yield state.copyWith(
+        error: "Este servicio no tiene una reunión de Google Meet asociada",
+        loading: false,
+      );
     } else {
       final response = await _openDynamicLink.execute(link);
       if (response.isLeft()) {
-        yield AulaAbiertaFailure("No se logró abrir Google Meet");
+        yield state.copyWith(
+          error: "No se logró abrir Google Meet",
+          loading: false,
+        );
       }
     }
   }

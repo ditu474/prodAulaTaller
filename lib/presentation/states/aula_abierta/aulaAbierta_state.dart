@@ -1,31 +1,31 @@
 part of 'aulaAbierta_bloc.dart';
 
-@immutable
-abstract class AulaAbiertaState extends Equatable {
-  const AulaAbiertaState();
-
-  @override
-  List<Object> get props => [];
-}
-
-class AulaAbiertaInitial extends AulaAbiertaState {}
-
-class AulaAbiertaLoading extends AulaAbiertaState {}
-
-class AulaAbiertaSuccess extends AulaAbiertaState {
+class AulaAbiertaState extends Equatable {
   final List<Service> services;
+  final bool loading;
+  final String error;
 
-  const AulaAbiertaSuccess(this.services);
+  const AulaAbiertaState({
+    this.services,
+    this.error = '',
+    this.loading = false,
+  });
+
+  AulaAbiertaState copyWith({
+    List<Service> services,
+    String error,
+    bool loading,
+  }) {
+    return AulaAbiertaState(
+      services: services ?? this.services,
+      error: error ?? this.error,
+      loading: loading ?? this.loading,
+    );
+  }
 
   @override
-  List<Object> get props => [services];
-}
-
-class AulaAbiertaFailure extends AulaAbiertaState {
-  final String errorMsg;
-
-  const AulaAbiertaFailure(this.errorMsg);
+  List<Object> get props => [services, error, loading];
 
   @override
-  List<Object> get props => [errorMsg];
+  bool get stringify => true;
 }

@@ -30,24 +30,16 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AulaAbiertaBloc, AulaAbiertaState>(
       listener: (context, state) {
-        if (state is AulaAbiertaLoading) {
-          CustomSnackBar.showLoadingSnackBar(
-              ctx: context, leftWidget: Text('Cargando Horarios'));
-        }
-        if (state is AulaAbiertaFailure) {
+        if (state.error != "") {
           CustomSnackBar.showErrorSnackBar(
-              ctx: context, leftWidget: Text(state.errorMsg));
-        }
-        if (state is AulaAbiertaSuccess) {
-          CustomSnackBar.showSuccessSnackBar(
-              ctx: context, leftWidget: Text(''));
+              ctx: context, leftWidget: Text(state.error));
         }
       },
       builder: (context, state) {
-        if (state is AulaAbiertaInitial) {
+        if (state.services == null && state.loading == false) {
           context.bloc<AulaAbiertaBloc>().add(FetchServices());
         }
-        if (state is AulaAbiertaSuccess) {
+        if (state.services != null) {
           Map<String, List<Service>> servicesMap =
               _separateServicesByDay(state.services);
           return Container(
@@ -73,7 +65,7 @@ class Body extends StatelessWidget {
           );
         }
         return Center(
-          child: Text(''),
+          child: CircularProgressIndicator(),
         );
       },
     );

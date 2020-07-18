@@ -17,6 +17,7 @@ class ServiceCard extends StatelessWidget {
         context.bloc<AulaAbiertaBloc>().add(ItemPressed(service.link));
       },
       child: Container(
+        margin: EdgeInsets.all(responsive.inchPercent(1)),
         padding: EdgeInsets.all(responsive.inchPercent(1)),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -24,6 +25,7 @@ class ServiceCard extends StatelessWidget {
           border: Border.all(
             color: Colors.orange,
             style: BorderStyle.solid,
+            width: 2,
           ),
           boxShadow: [
             BoxShadow(
@@ -33,44 +35,65 @@ class ServiceCard extends StatelessWidget {
             ),
           ],
         ),
-        width: responsive.widthPercent(30),
+        width: responsive.widthPercent(42),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              service.assignment ?? service.theme,
-              style: TextStyle(
-                color: Colors.orange,
-                fontSize: responsive.inchPercent(2),
-                fontWeight: FontWeight.w800,
-              ),
+            TextLine(
+              weight: FontWeight.w700,
+              color: Colors.orange,
+              text: service.assignment ?? service.theme,
+              size: responsive.inchPercent(2.3),
             ),
-            Text(
-              '${service.startTime} - ${service.endTime}',
-              style: TextStyle(
-                color: Colors.green,
-                fontSize: responsive.inchPercent(1.6),
-                fontWeight: FontWeight.w600,
-              ),
+            TextLine(
+              weight: FontWeight.w600,
+              color: Colors.green,
+              text: '${service.startTime} - ${service.endTime}',
+              size: responsive.inchPercent(2.2),
             ),
-            Text(
-              service.teacher,
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: responsive.inchPercent(1.6),
-                fontWeight: FontWeight.w500,
-              ),
+            TextLine(
+              weight: FontWeight.w500,
+              color: Colors.black,
+              text: service.teacher,
+              size: responsive.inchPercent(2),
             ),
-            Text(
-              service.campus.toUpperCase(),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: responsive.inchPercent(1.4),
-                fontWeight: FontWeight.w400,
-              ),
+            TextLine(
+              weight: FontWeight.w400,
+              color: Colors.grey,
+              text: service.campus.toUpperCase(),
+              size: responsive.inchPercent(1.6),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class TextLine extends StatelessWidget {
+  final String text;
+  final Color color;
+  final double size;
+  final FontWeight weight;
+
+  const TextLine(
+      {@required this.text,
+      @required this.color,
+      @required this.size,
+      @required this.weight});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 4),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: color,
+          fontSize: size,
+          fontWeight: weight,
+          height: 1,
         ),
       ),
     );

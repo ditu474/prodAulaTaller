@@ -22,9 +22,8 @@ class DaySection extends StatelessWidget {
           text: day,
         ),
         Container(
-          height: responsive.heigthPercent(25),
+          height: responsive.heigthPercent(29),
           width: double.infinity,
-          color: Colors.green,
           child: ListView.builder(
             itemBuilder: (_, index) => ServiceCard(services[index]),
             itemCount: services.length,
