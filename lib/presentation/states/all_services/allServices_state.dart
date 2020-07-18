@@ -1,22 +1,22 @@
-part of 'aulaAbierta_bloc.dart';
+part of 'allServices_bloc.dart';
 
-class AulaAbiertaState extends Equatable {
-  final List<AulaAbiertaService> services;
+class AllServicesState extends Equatable {
+  final List<Service> services;
   final bool loading;
   final String error;
 
-  const AulaAbiertaState({
+  const AllServicesState({
     this.services,
     this.error = '',
     this.loading = false,
   });
 
-  AulaAbiertaState copyWith({
-    List<AulaAbiertaService> services,
+  AllServicesState copyWith({
+    List<Service> services,
     String error,
     bool loading,
   }) {
-    return AulaAbiertaState(
+    return AllServicesState(
       services: services ?? this.services,
       error: error ?? this.error,
       loading: loading ?? this.loading,

@@ -1,11 +1,11 @@
-import 'package:aulataller/domain/entities/service.dart';
+import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
 import 'package:aulataller/presentation/UI/aula_abierta/ServiceCard.dart';
 import 'package:aulataller/presentation/UI/widgets/headerText.dart';
 import 'package:aulataller/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class DaySection extends StatelessWidget {
-  final List<Service> services;
+  final List<AulaAbiertaService> services;
   final String day;
   const DaySection({
     Key key,

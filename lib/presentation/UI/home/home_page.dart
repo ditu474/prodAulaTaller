@@ -1,6 +1,7 @@
 import 'package:aulataller/injection_container.dart';
 import 'package:aulataller/presentation/UI/home/servicesSection.dart';
 import 'package:aulataller/presentation/UI/home/utilitySection.dart';
+import 'package:aulataller/presentation/UI/widgets/defaultBackground.dart';
 import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:aulataller/presentation/states/home/home_bloc.dart';
 import 'package:aulataller/utils/responsive.dart';
@@ -64,32 +65,20 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final IResponsive responsive = Responsive.of(context);
-    return SafeArea(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: responsive.widthPercent(5),
-          vertical: responsive.heigthPercent(2),
-        ),
-        width: responsive.widthPercent(100),
-        height: responsive.heigthPercent(100),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.grey[300],
-              Colors.grey[500],
-              Colors.grey[300],
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+    return DefaultBackground(
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: responsive.widthPercent(5),
           ),
-        ),
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            children: <Widget>[
-              ServicesSection(),
-              UtilitySection(),
-            ],
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: <Widget>[
+                ServicesSection(),
+                UtilitySection(),
+              ],
+            ),
           ),
         ),
       ),

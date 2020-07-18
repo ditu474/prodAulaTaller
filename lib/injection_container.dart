@@ -1,3 +1,4 @@
+import 'package:aulataller/application/boundaries/get_all_services/iGetAllServices.dart';
 import 'package:aulataller/application/boundaries/get_aula_abierta_services.dart/iGetAulaAbiertaServices.dart';
 import 'package:aulataller/application/boundaries/get_last_user/iGetLastUser.dart';
 import 'package:aulataller/application/boundaries/login_with_credentials/iLoginWithCredentials.dart';
@@ -20,6 +21,7 @@ import 'package:aulataller/infrastructure/datasources/remoteDataSource.dart';
 import 'package:aulataller/infrastructure/repositories/authRepository.dart';
 import 'package:aulataller/infrastructure/repositories/serviceRepository.dart';
 import 'package:aulataller/presentation/states/acomp_psico/psico_bloc.dart';
+import 'package:aulataller/presentation/states/all_services/allServices_bloc.dart';
 import 'package:aulataller/presentation/states/aula_abierta/aulaAbierta_bloc.dart';
 import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:aulataller/presentation/states/home/home_bloc.dart';
@@ -34,6 +36,7 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'application/boundaries/delete_user/iDeleteUser.dart';
+import 'application/usecases/getAllServices.dart';
 
 final getIt = GetIt.instance;
 
@@ -77,6 +80,8 @@ Future<void> setup() async {
       () => SaveUserUseCase(authRepository: getIt<IAuthRepository>()));
   getIt.registerLazySingleton<IGetAulaAbiertaServices>(() =>
       GetAulaAbiertaServices(serviceRepository: getIt<IServicesRepository>()));
+  getIt.registerLazySingleton<IGetAllServices>(
+      () => GetAllServices(serviceRepository: getIt<IServicesRepository>()));
 
   //presentation
   getIt.registerFactory<LoginBloc>(() => LoginBloc(
@@ -105,5 +110,8 @@ Future<void> setup() async {
     () => AulaAbiertaBloc(
         openDynamicLink: getIt<IOpenDynamicLink>(),
         getAulaAbiertaServices: getIt<IGetAulaAbiertaServices>()),
+  );
+  getIt.registerFactory<AllServicesBloc>(
+    () => AllServicesBloc(getAllServices: getIt<IGetAllServices>()),
   );
 }

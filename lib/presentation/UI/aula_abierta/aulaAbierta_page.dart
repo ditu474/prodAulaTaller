@@ -1,6 +1,7 @@
-import 'package:aulataller/domain/entities/service.dart';
+import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
 import 'package:aulataller/injection_container.dart';
 import 'package:aulataller/presentation/UI/aula_abierta/daySection.dart';
+import 'package:aulataller/presentation/UI/widgets/defaultBackground.dart';
 import 'package:aulataller/presentation/states/aula_abierta/aulaAbierta_bloc.dart';
 import 'package:aulataller/utils/customSnackBar.dart';
 import 'package:flutter/material.dart';
@@ -36,26 +37,15 @@ class Body extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state.services == null && state.loading == false) {
+        if (state.services == null &&
+            state.loading == false &&
+            state.error == "") {
           context.bloc<AulaAbiertaBloc>().add(FetchServices());
         }
         if (state.services != null) {
-          Map<String, List<Service>> servicesMap =
+          Map<String, List<AulaAbiertaService>> servicesMap =
               _separateServicesByDay(state.services);
-          return Container(
-            height: double.infinity,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.grey[200],
-                  Colors.grey[400],
-                  Colors.grey[200],
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+          return DefaultBackground(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,9 +62,10 @@ class Body extends StatelessWidget {
   }
 }
 
-Map<String, List<Service>> _separateServicesByDay(List<Service> services) {
-  Map<String, List<Service>> servicesPerDay = {};
-  for (Service element in services) {
+Map<String, List<AulaAbiertaService>> _separateServicesByDay(
+    List<AulaAbiertaService> services) {
+  Map<String, List<AulaAbiertaService>> servicesPerDay = {};
+  for (AulaAbiertaService element in services) {
     if (!servicesPerDay.containsKey(element.day)) {
       servicesPerDay[element.day] = [element];
     } else {
@@ -84,7 +75,7 @@ Map<String, List<Service>> _separateServicesByDay(List<Service> services) {
   return servicesPerDay;
 }
 
-List<DaySection> _createSections(Map<String, List<Service>> map) {
+List<DaySection> _createSections(Map<String, List<AulaAbiertaService>> map) {
   List<DaySection> sections = [];
   for (String key in map.keys) {
     sections.add(

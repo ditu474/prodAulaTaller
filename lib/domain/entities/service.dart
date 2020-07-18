@@ -1,43 +1,19 @@
 import 'package:flutter/foundation.dart' show required;
 
 class Service {
-  final String _startTime;
-  final String _endTime;
-  final String _link;
-  final String _assignment;
-  final String _theme;
-  final String _teacher;
-  final String _campus;
+  final String _name;
+  final List<String> _privacy;
   final String _id;
-  final String _day;
 
   Service({
-    @required startTime,
-    @required endTime,
-    @required teacher,
-    link,
-    assignment,
-    theme,
-    campus,
+    @required name,
+    @required privacy,
     @required id,
-    @required day,
-  })  : this._assignment = assignment,
-        this._campus = campus,
-        this._id = id,
-        this._link = link,
-        this._endTime = endTime,
-        this._startTime = startTime,
-        this._teacher = teacher,
-        this._theme = theme,
-        this._day = day;
+  })  : this._id = id,
+        this._name = name,
+        this._privacy = privacy;
 
-  String get startTime => this._startTime;
-  String get endTime => this._endTime;
-  String get assignment => this._assignment;
-  String get campus => this._campus;
+  String get name => this._name;
+  List<String> get privacy => this._privacy;
   String get id => this._id;
-  String get link => this._link;
-  String get teacher => this._teacher;
-  String get theme => this._theme;
-  String get day => this._day;
 }

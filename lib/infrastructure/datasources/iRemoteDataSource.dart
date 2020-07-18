@@ -1,3 +1,4 @@
+import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
 import 'package:aulataller/domain/entities/service.dart';
 import 'package:aulataller/domain/entities/user.dart';
 import 'package:aulataller/domain/value_objects/email.dart';
@@ -11,5 +12,6 @@ abstract class IRemoteDataSource {
   Future<String> forgotPassword({@required Email email});
   Future<User> resetPassword(
       {@required Password password, @required String resetToken});
-  Future<List<Service>> getAulaAbiertaServices(String token);
+  Future<List<AulaAbiertaService>> getAulaAbiertaServices(String token);
+  Future<List<Service>> getAllServices(String token);
 }

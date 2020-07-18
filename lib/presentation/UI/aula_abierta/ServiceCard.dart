@@ -1,11 +1,11 @@
-import 'package:aulataller/domain/entities/service.dart';
+import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
 import 'package:aulataller/presentation/states/aula_abierta/aulaAbierta_bloc.dart';
 import 'package:aulataller/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ServiceCard extends StatelessWidget {
-  final Service service;
+  final AulaAbiertaService service;
 
   const ServiceCard(this.service);
 
@@ -89,6 +89,8 @@ class TextLine extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
+        maxLines: 3,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: color,
           fontSize: size,

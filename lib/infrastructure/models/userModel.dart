@@ -37,7 +37,7 @@ class UserModel extends User {
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(token: Token.create(map["token"]).getOrElse(null));
+    return new UserModel(token: Token.create(map["token"]).getOrElse(null));
     // email: Email.create(map["data"]["user"]["correo"]).getOrElse(null),
     // name: Name.create(map["data"]["user"]["nombre"]).getOrElse(null),
     // typeOfDocument:

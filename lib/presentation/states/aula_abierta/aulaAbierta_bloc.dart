@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:aulataller/application/boundaries/get_aula_abierta_services.dart/iGetAulaAbiertaServices.dart';
 import 'package:aulataller/application/boundaries/open_dynamic_link/iOpenDynamicLink.dart';
-import 'package:aulataller/domain/entities/service.dart';
+import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
@@ -40,7 +40,6 @@ class AulaAbiertaBloc extends Bloc<AulaAbiertaEvent, AulaAbiertaState> {
 
   Stream<AulaAbiertaState> _mapFetchServicesState() async* {
     final response = await _getAulaAbiertaServices.execute(null);
-    print('call');
     if (response.isLeft()) {
       yield state.copyWith(
         error: response.fold((l) => l.message, (r) => null),

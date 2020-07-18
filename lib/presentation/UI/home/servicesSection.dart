@@ -1,4 +1,5 @@
 import 'package:aulataller/presentation/UI/acomp_psico/psico_page.dart';
+import 'package:aulataller/presentation/UI/all_services/allServices_page.dart';
 import 'package:aulataller/presentation/UI/aula_abierta/aulaAbierta_page.dart';
 import 'package:aulataller/presentation/UI/home/sectionGroup.dart';
 import 'package:aulataller/presentation/UI/sabios_gratin/sabios_page.dart';
@@ -87,7 +88,12 @@ class ServicesSection extends StatelessWidget {
             colorMedio: Colors.amber[500],
           ),
           Section(
-            action: () {},
+            action: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AllServicesPage()),
+              );
+            },
             svg: "assets/icons/search.svg",
             name: 'Ver Todos Los Servicios',
             colorLados: Colors.brown[200],

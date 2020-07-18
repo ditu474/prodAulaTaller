@@ -1,3 +1,4 @@
+import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
 import 'package:aulataller/domain/entities/service.dart';
 import 'package:aulataller/domain/repositories/iServicesRepository.dart';
 import 'package:aulataller/domain/value_objects/failure.dart';
@@ -19,13 +20,31 @@ class ServiceRepository implements IServicesRepository {
   });
 
   @override
-  Future<Either<Failure, List<Service>>> getAulaAbiertaServices() async {
+  Future<Either<Failure, List<AulaAbiertaService>>>
+      getAulaAbiertaServices() async {
     if (await networkInfo.isConnected) {
       try {
         final token = await localDataSource.getToken();
         if (token == null)
           return Left(Failure('No se encontró un usuario logueado'));
         final response = await remoteDataSource.getAulaAbiertaServices(token);
+        return Right(response);
+      } catch (e) {
+        return Left(Failure(e.toString()));
+      }
+    } else {
+      return Left(Failure('No tienes conexión a internet'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Service>>> getAllServices() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final token = await localDataSource.getToken();
+        if (token == null)
+          return Left(Failure('No se encontró un usuario logueado'));
+        final response = await remoteDataSource.getAllServices(token);
         return Right(response);
       } catch (e) {
         return Left(Failure(e.toString()));

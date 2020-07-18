@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
 import 'package:aulataller/domain/entities/service.dart';
 import 'package:aulataller/domain/entities/user.dart';
 import 'package:aulataller/domain/value_objects/email.dart';
 import 'package:aulataller/domain/value_objects/password.dart';
 import 'package:aulataller/infrastructure/datasources/iRemoteDataSource.dart';
 import 'package:aulataller/infrastructure/models/exception.dart';
+import 'package:aulataller/infrastructure/models/aulaAbiertaServiceModel.dart';
 import 'package:aulataller/infrastructure/models/serviceModel.dart';
 import 'package:aulataller/infrastructure/models/userModel.dart';
 import 'package:flutter/foundation.dart' show required;
@@ -88,7 +90,7 @@ class RemoteDataSource implements IRemoteDataSource {
   }
 
   @override
-  Future<List<Service>> getAulaAbiertaServices(String token) async {
+  Future<List<AulaAbiertaService>> getAulaAbiertaServices(String token) async {
     try {
       final response = await client.get(
         urlAPI +
@@ -100,7 +102,29 @@ class RemoteDataSource implements IRemoteDataSource {
       );
       if (response.statusCode == 200) {
         return List.from(json.decode(response.body)["data"]["doc"])
-            .map((e) => ServiceModel.fromMap(e))
+            .map((service) => AulaAbiertaServiceModel.fromMap(service))
+            .toList();
+      } else {
+        throw CustomException(json.decode(response.body)["message"]);
+      }
+    } catch (err) {
+      throw CustomException(err.toString());
+    }
+  }
+
+  @override
+  Future<List<Service>> getAllServices(String token) async {
+    try {
+      final response = await client.get(
+        urlAPI + 'api/v1/tiposervicio?sort=nombre',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return List.from(json.decode(response.body)["data"]["doc"])
+            .map((service) => ServiceModel.fromMap(service))
             .toList();
       } else {
         throw CustomException(json.decode(response.body)["message"]);
