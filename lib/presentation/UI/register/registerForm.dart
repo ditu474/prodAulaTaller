@@ -3,6 +3,7 @@ import 'package:aulataller/presentation/UI/widgets/customInputForm.dart';
 import 'package:aulataller/presentation/UI/widgets/gradientButton.dart';
 import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:aulataller/presentation/states/register/register_bloc.dart';
+import 'package:aulataller/utils/customSnackBar.dart';
 import 'package:aulataller/utils/data.dart';
 import 'package:aulataller/utils/responsive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,20 +22,15 @@ class _RegisterFormState extends State<RegisterForm> {
     return BlocConsumer<RegisterBloc, RegisterState>(
       listener: (context, state) {
         if (state.status.isSubmissionInProgress) {
-          _showSnackBar(
+          CustomSnackBar.showLoadingSnackBar(
             ctx: context,
-            background: Colors.orange,
             leftWidget: Text('Verificando'),
-            rightWidget: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
           );
         } else if (state.status.isSubmissionFailure) {
-          _showSnackBar(
-              ctx: context,
-              background: Colors.red,
-              leftWidget: Text(state.error),
-              rightWidget: Icon(Icons.block));
+          CustomSnackBar.showErrorSnackBar(
+            ctx: context,
+            leftWidget: Text(state.error),
+          );
         } else if (state.status.isSubmissionSuccess) {
           context.bloc<AuthBloc>().add(AuthenticationLoggedIn());
           Navigator.of(context).pop();
@@ -223,24 +219,4 @@ class _RegisterFormState extends State<RegisterForm> {
       },
     );
   }
-}
-
-void _showSnackBar({
-  @required BuildContext ctx,
-  @required Color background,
-  @required Widget leftWidget,
-  @required Widget rightWidget,
-}) {
-  Scaffold.of(ctx)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(
-      content: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Flexible(child: leftWidget),
-          rightWidget,
-        ],
-      ),
-      backgroundColor: background,
-    ));
 }

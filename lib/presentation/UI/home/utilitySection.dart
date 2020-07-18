@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UtilitySection extends StatelessWidget {
-  final BuildContext ctx;
   UtilitySection({
     Key key,
-    @required this.ctx,
   }) : super(key: key);
 
   @override
@@ -17,21 +15,21 @@ class UtilitySection extends StatelessWidget {
       Section(
         action: () {},
         svg: "assets/icons/accountInfo.svg",
-        name: 'Información De\nLa Cuenta',
+        name: 'Información De La Cuenta',
         colorLados: Colors.cyan[200],
         colorMedio: Colors.cyan[500],
       ),
       Section(
         action: () {},
         svg: "assets/icons/asistence.svg",
-        name: 'Mis\nAsistencias',
+        name: 'Mis Asistencias',
         colorLados: Colors.deepPurple[200],
         colorMedio: Colors.deepPurple[500],
       ),
       Section(
         action: () {},
         svg: "assets/icons/valoration.svg",
-        name: 'Mis\nValoraciones',
+        name: 'Mis Valoraciones',
         colorLados: Colors.indigo[200],
         colorMedio: Colors.indigo[500],
       ),

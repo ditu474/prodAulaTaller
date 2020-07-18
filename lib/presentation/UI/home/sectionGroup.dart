@@ -32,6 +32,7 @@ class SectionGroup extends StatelessWidget {
           crossAxisCount: 3,
           children: items,
           shrinkWrap: true,
+          childAspectRatio: 0.9,
         ),
       ],
     );

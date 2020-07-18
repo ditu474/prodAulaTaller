@@ -29,7 +29,7 @@ class Section extends StatelessWidget {
             margin: EdgeInsets.all(responsive.widthPercent(1)),
             height: responsive.heigthPercent(11),
             width: responsive.heigthPercent(11),
-            padding: EdgeInsets.all(6),
+            padding: EdgeInsets.all(responsive.inchPercent(0.4)),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [colorLados, colorMedio, colorLados],
@@ -56,7 +56,11 @@ class Section extends StatelessWidget {
           Text(
             name,
             textAlign: TextAlign.center,
-            style: TextStyle(height: 1),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              height: 1,
+            ),
           ),
         ],
       ),

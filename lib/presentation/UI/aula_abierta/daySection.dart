@@ -1,0 +1,38 @@
+import 'package:aulataller/domain/entities/service.dart';
+import 'package:aulataller/presentation/UI/aula_abierta/ServiceCard.dart';
+import 'package:aulataller/presentation/UI/widgets/headerText.dart';
+import 'package:aulataller/utils/responsive.dart';
+import 'package:flutter/material.dart';
+
+class DaySection extends StatelessWidget {
+  final List<Service> services;
+  final String day;
+  const DaySection({
+    Key key,
+    @required this.services,
+    @required this.day,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final IResponsive responsive = Responsive.of(context);
+    return Column(
+      children: <Widget>[
+        HeaderText(
+          text: day,
+        ),
+        Container(
+          height: responsive.heigthPercent(25),
+          width: double.infinity,
+          color: Colors.green,
+          child: ListView.builder(
+            itemBuilder: (_, index) => ServiceCard(services[index]),
+            itemCount: services.length,
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+          ),
+        ),
+      ],
+    );
+  }
+}

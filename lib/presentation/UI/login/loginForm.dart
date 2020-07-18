@@ -2,6 +2,7 @@ import 'package:aulataller/presentation/UI/widgets/customInputForm.dart';
 import 'package:aulataller/presentation/UI/widgets/gradientButton.dart';
 import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:aulataller/presentation/states/login/login_bloc.dart';
+import 'package:aulataller/utils/customSnackBar.dart';
 import 'package:aulataller/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,19 +24,15 @@ class _LoginFormState extends State<LoginForm> {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.status.isSubmissionInProgress) {
-          _showSnackBar(
-              ctx: context,
-              background: Colors.orange,
-              leftWidget: Text('Verificando'),
-              rightWidget: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ));
+          CustomSnackBar.showLoadingSnackBar(
+            ctx: context,
+            leftWidget: Text('Verificando'),
+          );
         } else if (state.status.isSubmissionFailure) {
-          _showSnackBar(
-              ctx: context,
-              background: Colors.red,
-              leftWidget: Text(state.error),
-              rightWidget: Icon(Icons.block));
+          CustomSnackBar.showErrorSnackBar(
+            ctx: context,
+            leftWidget: Text(state.error),
+          );
         } else if (state.status.isSubmissionSuccess) {
           context.bloc<AuthBloc>().add(AuthenticationLoggedIn());
         }
@@ -89,24 +86,4 @@ class _LoginFormState extends State<LoginForm> {
       },
     );
   }
-}
-
-void _showSnackBar({
-  @required BuildContext ctx,
-  @required Color background,
-  @required Widget leftWidget,
-  @required Widget rightWidget,
-}) {
-  Scaffold.of(ctx)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(
-      content: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(child: leftWidget),
-          rightWidget,
-        ],
-      ),
-      backgroundColor: background,
-    ));
 }
