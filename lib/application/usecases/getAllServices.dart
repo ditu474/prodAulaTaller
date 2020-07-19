@@ -1,7 +1,8 @@
 import 'package:aulataller/application/boundaries/get_all_services/iGetAllServices.dart';
+import 'package:aulataller/domain/entities/failure.dart';
 import 'package:aulataller/domain/entities/service.dart';
 import 'package:aulataller/domain/repositories/iServicesRepository.dart';
-import 'package:aulataller/domain/value_objects/failure.dart';
+
 import 'package:flutter/foundation.dart' show required;
 import 'package:dartz/dartz.dart';
 

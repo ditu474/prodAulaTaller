@@ -25,7 +25,10 @@ class DaySection extends StatelessWidget {
           height: responsive.heigthPercent(29),
           width: double.infinity,
           child: ListView.builder(
-            itemBuilder: (_, index) => ServiceCard(services[index]),
+            itemBuilder: (_, index) => FittedBox(
+              fit: BoxFit.none,
+              child: ServiceCard(services[index]),
+            ),
             itemCount: services.length,
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,

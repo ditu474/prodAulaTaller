@@ -307,7 +307,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       int semester,
       String typeOfDocument,
       String typeOfUser}) async* {
-    var user = RegisterUserInput.createFromInputs(
+    var user = RegisterUserInput(
         email: email,
         password: password,
         name: name,
@@ -317,20 +317,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         document: document,
         campus: campus,
         academicProgram: academicProgram);
-    if (user.isLeft()) {
+    var response = await _registerUser.execute(user);
+    if (response.isRight()) {
+      await _saveUser.execute(response.getOrElse(null));
+      yield state.copyWith(status: FormzStatus.submissionSuccess);
+    } else {
       yield state.copyWith(
           status: FormzStatus.submissionFailure,
-          error: user.fold((l) => l.message, (r) => null));
-    } else {
-      var response = await _registerUser.execute(user.getOrElse(null));
-      if (response.isRight()) {
-        await _saveUser.execute(response.getOrElse(null));
-        yield state.copyWith(status: FormzStatus.submissionSuccess);
-      } else {
-        yield state.copyWith(
-            status: FormzStatus.submissionFailure,
-            error: response.fold((l) => l.message, (r) => null));
-      }
+          error: response.fold((l) => l.message, (r) => null));
     }
   }
 }

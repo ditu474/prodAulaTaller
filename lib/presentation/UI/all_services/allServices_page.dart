@@ -56,14 +56,15 @@ class Body extends StatelessWidget {
             ),
           );
         }
-        if (state.services == null &&
-            state.loading == false &&
-            state.error == "") {
+        if (AllServicesState() == state) {
           context.bloc<AllServicesBloc>().add(FetchServices());
         }
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        if (state.loading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return SizedBox();
       },
     );
   }

@@ -26,10 +26,8 @@ class Section extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Container(
-            margin: EdgeInsets.all(responsive.widthPercent(1)),
-            height: responsive.heigthPercent(11),
-            width: responsive.heigthPercent(11),
-            padding: EdgeInsets.all(responsive.inchPercent(0.4)),
+            margin: EdgeInsets.only(top: responsive.heigthPercent(1)),
+            padding: EdgeInsets.all(responsive.inchPercent(0.5)),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [colorLados, colorMedio, colorLados],
@@ -47,12 +45,10 @@ class Section extends StatelessWidget {
             ),
             child: SvgPicture.asset(
               svg,
-              semanticsLabel: name,
-              fit: BoxFit.contain,
-              height: responsive.heigthPercent(8),
+              height: responsive.heigthPercent(9),
             ),
           ),
-          SizedBox(height: responsive.heigthPercent(1)),
+          SizedBox(height: responsive.heigthPercent(1.5)),
           Text(
             name,
             textAlign: TextAlign.center,
@@ -60,6 +56,8 @@ class Section extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               height: 1,
+              fontWeight: FontWeight.w700,
+              fontSize: responsive.heigthPercent(1.8),
             ),
           ),
         ],

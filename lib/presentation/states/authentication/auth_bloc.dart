@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:aulataller/application/boundaries/delete_user/iDeleteUser.dart';
-import 'package:aulataller/application/boundaries/get_last_user/iGetLastUser.dart';
+import 'package:aulataller/application/boundaries/get_token/iGetLastUser.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart' show required;
@@ -10,13 +10,13 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final IGetLastUser _getLastUser;
+  final IGetToken _getLastUser;
   final IDeleteUser _deleteLastUser;
 
-  AuthBloc({@required IGetLastUser getLastUser,
-  @required IDeleteUser deleteLastUser})
-  : _getLastUser= getLastUser,
-  _deleteLastUser= deleteLastUser;
+  AuthBloc(
+      {@required IGetToken getLastUser, @required IDeleteUser deleteLastUser})
+      : _getLastUser = getLastUser,
+        _deleteLastUser = deleteLastUser;
 
   @override
   AuthState get initialState => AuthenticationInitial();
@@ -45,12 +45,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Stream<AuthState> _mapAuthenticationLoggedInToState() async* {
     final token = await _getLastUser.execute('');
-    if(token.isRight()){
+    if (token.isRight()) {
       yield AuthenticationSuccess(token.getOrElse(null));
-    }else{
+    } else {
       yield AuthenticationFailure();
     }
-    
   }
 
   Stream<AuthState> _mapAuthenticationLoggedOutToState() async* {

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:aulataller/application/boundaries/get_all_services/iGetAllServices.dart';
-import 'package:aulataller/application/boundaries/open_dynamic_link/iOpenDynamicLink.dart';
 import 'package:aulataller/domain/entities/service.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';

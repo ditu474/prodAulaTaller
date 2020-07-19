@@ -1,3 +1,3 @@
 import 'package:aulataller/application/boundaries/iUseCase.dart';
 
-abstract class IGetLastUser implements IUseCase<String,String>{}
+abstract class IGetToken implements IUseCase<String, String> {}

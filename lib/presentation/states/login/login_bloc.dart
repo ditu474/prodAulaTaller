@@ -55,23 +55,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     String email,
     String password,
   }) async* {
-    var credentials = LoginCredentialsInput.createFromStrings(
-        email: email, password: password);
-    if (credentials.isLeft()) {
+    var credentials = LoginCredentialsInput(email: email, password: password);
+    var response = await _loginWithCredentials.execute(credentials);
+    if (response.isRight()) {
+      await _saveUser.execute(response.getOrElse(null));
+      yield state.copyWith(status: FormzStatus.submissionSuccess);
+    } else {
       yield state.copyWith(
           status: FormzStatus.submissionFailure,
-          error: credentials.fold((l) => l.message, (r) => null));
-    } else {
-      var response =
-          await _loginWithCredentials.execute(credentials.getOrElse(null));
-      if (response.isRight()) {
-        await _saveUser.execute(response.getOrElse(null));
-        yield state.copyWith(status: FormzStatus.submissionSuccess);
-      } else {
-        yield state.copyWith(
-            status: FormzStatus.submissionFailure,
-            error: response.fold((l) => l.message, (r) => null));
-      }
+          error: response.fold((l) => l.message, (r) => null));
     }
   }
 

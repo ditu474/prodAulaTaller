@@ -1,13 +1,17 @@
 import 'package:aulataller/application/boundaries/get_all_services/iGetAllServices.dart';
 import 'package:aulataller/application/boundaries/get_aula_abierta_services.dart/iGetAulaAbiertaServices.dart';
-import 'package:aulataller/application/boundaries/get_last_user/iGetLastUser.dart';
+import 'package:aulataller/application/boundaries/get_current_user/iGetCurrentUser.dart';
+import 'package:aulataller/application/boundaries/get_my_valuations/iGetMyValuations.dart';
+import 'package:aulataller/application/boundaries/get_token/iGetLastUser.dart';
 import 'package:aulataller/application/boundaries/login_with_credentials/iLoginWithCredentials.dart';
 import 'package:aulataller/application/boundaries/open_dynamic_link/iOpenDynamicLink.dart';
 import 'package:aulataller/application/boundaries/register_user/iRegisterUser.dart';
 import 'package:aulataller/application/boundaries/save_user/iSaveUser.dart';
 import 'package:aulataller/application/usecases/deleteUserUseCase.dart';
 import 'package:aulataller/application/usecases/getAulaAbiertaServices.dart';
+import 'package:aulataller/application/usecases/getCurrentUser.dart';
 import 'package:aulataller/application/usecases/getLastUserUseCase.dart';
+import 'package:aulataller/application/usecases/getMyValuations.dart';
 import 'package:aulataller/application/usecases/loginWithCredentialsUseCase.dart';
 import 'package:aulataller/application/usecases/openDynamicLinkUseCase.dart';
 import 'package:aulataller/application/usecases/registerUserUseCase.dart';
@@ -20,6 +24,7 @@ import 'package:aulataller/infrastructure/datasources/localDataSource.dart';
 import 'package:aulataller/infrastructure/datasources/remoteDataSource.dart';
 import 'package:aulataller/infrastructure/repositories/authRepository.dart';
 import 'package:aulataller/infrastructure/repositories/serviceRepository.dart';
+import 'package:aulataller/presentation/states/account/account_bloc.dart';
 import 'package:aulataller/presentation/states/acomp_psico/psico_bloc.dart';
 import 'package:aulataller/presentation/states/all_services/allServices_bloc.dart';
 import 'package:aulataller/presentation/states/aula_abierta/aulaAbierta_bloc.dart';
@@ -28,6 +33,7 @@ import 'package:aulataller/presentation/states/home/home_bloc.dart';
 import 'package:aulataller/presentation/states/login/login_bloc.dart';
 import 'package:aulataller/presentation/states/register/register_bloc.dart';
 import 'package:aulataller/presentation/states/sabios_gratin/sabios_bloc.dart';
+import 'package:aulataller/presentation/states/valuations/valuations_bloc.dart';
 import 'package:aulataller/utils/networkInfo.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
@@ -72,8 +78,8 @@ Future<void> setup() async {
   getIt.registerLazySingleton<IOpenDynamicLink>(() => OpenDynamicLinkUseCase());
   getIt.registerLazySingleton<IDeleteUser>(
       () => DeleteUserUseCase(authRepository: getIt<IAuthRepository>()));
-  getIt.registerLazySingleton<IGetLastUser>(
-      () => GetLastUserUseCase(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<IGetToken>(
+      () => GetToken(authRepository: getIt<IAuthRepository>()));
   getIt.registerLazySingleton<IRegisterUser>(
       () => RegisterUserUseCase(authRepository: getIt<IAuthRepository>()));
   getIt.registerLazySingleton<ISaveUser>(
@@ -82,6 +88,10 @@ Future<void> setup() async {
       GetAulaAbiertaServices(serviceRepository: getIt<IServicesRepository>()));
   getIt.registerLazySingleton<IGetAllServices>(
       () => GetAllServices(serviceRepository: getIt<IServicesRepository>()));
+  getIt.registerLazySingleton<IGetCurrentUser>(
+      () => GetCurrentUser(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<IGetMyValuations>(
+      () => GetMyValuations(serviceRepository: getIt<IServicesRepository>()));
 
   //presentation
   getIt.registerFactory<LoginBloc>(() => LoginBloc(
@@ -89,8 +99,7 @@ Future<void> setup() async {
       openDynamicLink: getIt<IOpenDynamicLink>(),
       saveUser: getIt<ISaveUser>()));
   getIt.registerFactory<AuthBloc>(() => AuthBloc(
-      deleteLastUser: getIt<IDeleteUser>(),
-      getLastUser: getIt<IGetLastUser>()));
+      deleteLastUser: getIt<IDeleteUser>(), getLastUser: getIt<IGetToken>()));
   getIt.registerFactory<RegisterBloc>(
     () => RegisterBloc(
       registerUser: getIt<IRegisterUser>(),
@@ -113,5 +122,11 @@ Future<void> setup() async {
   );
   getIt.registerFactory<AllServicesBloc>(
     () => AllServicesBloc(getAllServices: getIt<IGetAllServices>()),
+  );
+  getIt.registerFactory<AccountBloc>(
+    () => AccountBloc(getCurrentUser: getIt<IGetCurrentUser>()),
+  );
+  getIt.registerFactory<ValuationsBloc>(
+    () => ValuationsBloc(getMyValuations: getIt<IGetMyValuations>()),
   );
 }

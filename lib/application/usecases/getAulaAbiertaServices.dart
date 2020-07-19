@@ -1,8 +1,8 @@
 import 'package:aulataller/application/boundaries/get_aula_abierta_services.dart/iGetAulaAbiertaServices.dart';
 import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
+import 'package:aulataller/domain/entities/failure.dart';
 import 'package:aulataller/domain/repositories/iServicesRepository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:aulataller/domain/value_objects/failure.dart';
 import 'package:flutter/foundation.dart' show required;
 
 class GetAulaAbiertaServices implements IGetAulaAbiertaServices {

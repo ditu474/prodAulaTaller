@@ -1,4 +1,6 @@
+import 'package:aulataller/presentation/UI/account_info/account_page.dart';
 import 'package:aulataller/presentation/UI/home/sectionGroup.dart';
+import 'package:aulataller/presentation/UI/valuations/valuations_page.dart';
 import 'package:aulataller/presentation/UI/widgets/section.dart';
 import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,12 @@ class UtilitySection extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Section> sectionsItems = [
       Section(
-        action: () {},
+        action: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AccountInfoPage()),
+          );
+        },
         svg: "assets/icons/accountInfo.svg",
         name: 'Información De La Cuenta',
         colorLados: Colors.cyan[200],
@@ -27,7 +34,12 @@ class UtilitySection extends StatelessWidget {
         colorMedio: Colors.deepPurple[500],
       ),
       Section(
-        action: () {},
+        action: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ValuationsPage()),
+          );
+        },
         svg: "assets/icons/valoration.svg",
         name: 'Mis Valoraciones',
         colorLados: Colors.indigo[200],

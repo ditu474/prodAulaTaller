@@ -1,7 +1,8 @@
 import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
+import 'package:aulataller/domain/entities/failure.dart';
 import 'package:aulataller/domain/entities/service.dart';
+import 'package:aulataller/domain/entities/valuation.dart';
 import 'package:aulataller/domain/repositories/iServicesRepository.dart';
-import 'package:aulataller/domain/value_objects/failure.dart';
 import 'package:aulataller/infrastructure/datasources/iLocalDataSource.dart';
 import 'package:aulataller/infrastructure/datasources/iRemoteDataSource.dart';
 import 'package:aulataller/utils/networkInfo.dart';
@@ -45,6 +46,23 @@ class ServiceRepository implements IServicesRepository {
         if (token == null)
           return Left(Failure('No se encontró un usuario logueado'));
         final response = await remoteDataSource.getAllServices(token);
+        return Right(response);
+      } catch (e) {
+        return Left(Failure(e.toString()));
+      }
+    } else {
+      return Left(Failure('No tienes conexión a internet'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Valuation>>> getMyValuations() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final token = await localDataSource.getToken();
+        if (token == null)
+          return Left(Failure('No se encontró un usuario logueado'));
+        final response = await remoteDataSource.getMyValuations(token);
         return Right(response);
       } catch (e) {
         return Left(Failure(e.toString()));

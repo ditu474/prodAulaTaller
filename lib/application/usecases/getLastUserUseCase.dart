@@ -1,19 +1,18 @@
-import 'package:aulataller/application/boundaries/get_last_user/iGetLastUser.dart';
+import 'package:aulataller/application/boundaries/get_token/iGetLastUser.dart';
+import 'package:aulataller/domain/entities/failure.dart';
 import 'package:aulataller/domain/repositories/iAuthRepository.dart';
 import 'package:dartz/dartz.dart';
-import 'package:aulataller/domain/value_objects/failure.dart';
 import 'package:flutter/foundation.dart' show required;
 
-class GetLastUserUseCase extends IGetLastUser{
+class GetToken extends IGetToken {
   final IAuthRepository _authRepository;
 
-  GetLastUserUseCase({
-    @required IAuthRepository authRepository
-    }) : _authRepository = authRepository;
+  GetToken({@required IAuthRepository authRepository})
+      : _authRepository = authRepository;
 
   @override
   Future<Either<Failure, String>> execute(String input) async {
-    final response = await _authRepository.findLastUser();
+    final response = await _authRepository.getToken();
 
     return response.fold((l) => Left(l), (r) => Right(r));
   }
