@@ -1,3 +1,4 @@
+import 'package:aulataller/domain/entities/assist.dart';
 import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
 import 'package:aulataller/domain/entities/failure.dart';
 import 'package:aulataller/domain/entities/service.dart';
@@ -63,6 +64,41 @@ class ServiceRepository implements IServicesRepository {
         if (token == null)
           return Left(Failure('No se encontró un usuario logueado'));
         final response = await remoteDataSource.getMyValuations(token);
+        return Right(response);
+      } catch (e) {
+        return Left(Failure(e.toString()));
+      }
+    } else {
+      return Left(Failure('No tienes conexión a internet'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Assist>>> getMyAssists() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final token = await localDataSource.getToken();
+        if (token == null)
+          return Left(Failure('No se encontró un usuario logueado'));
+        final response = await remoteDataSource.getMyAssists(token);
+        return Right(response);
+      } catch (e) {
+        return Left(Failure(e.toString()));
+      }
+    } else {
+      return Left(Failure('No tienes conexión a internet'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Assist>> addAssist(String code) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final token = await localDataSource.getToken();
+        if (token == null)
+          return Left(Failure('No se encontró un usuario logueado'));
+        final response =
+            await remoteDataSource.addNewAssist(code: code, token: token);
         return Right(response);
       } catch (e) {
         return Left(Failure(e.toString()));

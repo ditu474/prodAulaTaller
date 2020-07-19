@@ -117,8 +117,24 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
-  Future<Either<Failure, String>> updatePassword({String newPassword}) {
-    // TODO: implement updatePassword
-    throw UnimplementedError();
+  Future<Either<Failure, String>> updatePassword(
+      {String newPassword, String currentPassword}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final token = await localDataSource.getToken();
+        if (token == null)
+          return Left(Failure('No se encontró un usuario logueado'));
+        final response = await remoteDataSource.updatePassword(
+          currentPassword: currentPassword,
+          newPassword: newPassword,
+          token: token,
+        );
+        return Right(response);
+      } catch (e) {
+        return Left(Failure(e.toString()));
+      }
+    } else {
+      return Left(Failure('No tienes conexión a internet'));
+    }
   }
 }

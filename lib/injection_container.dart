@@ -1,21 +1,26 @@
+import 'package:aulataller/application/boundaries/add_assist/addAssist.dart';
 import 'package:aulataller/application/boundaries/get_all_services/iGetAllServices.dart';
 import 'package:aulataller/application/boundaries/get_aula_abierta_services.dart/iGetAulaAbiertaServices.dart';
 import 'package:aulataller/application/boundaries/get_current_user/iGetCurrentUser.dart';
+import 'package:aulataller/application/boundaries/get_my_assists/get_my_assists.dart';
 import 'package:aulataller/application/boundaries/get_my_valuations/iGetMyValuations.dart';
 import 'package:aulataller/application/boundaries/get_token/iGetLastUser.dart';
 import 'package:aulataller/application/boundaries/login_with_credentials/iLoginWithCredentials.dart';
 import 'package:aulataller/application/boundaries/open_dynamic_link/iOpenDynamicLink.dart';
 import 'package:aulataller/application/boundaries/register_user/iRegisterUser.dart';
 import 'package:aulataller/application/boundaries/save_user/iSaveUser.dart';
+import 'package:aulataller/application/usecases/addAssist.dart';
 import 'package:aulataller/application/usecases/deleteUserUseCase.dart';
 import 'package:aulataller/application/usecases/getAulaAbiertaServices.dart';
 import 'package:aulataller/application/usecases/getCurrentUser.dart';
 import 'package:aulataller/application/usecases/getLastUserUseCase.dart';
+import 'package:aulataller/application/usecases/getMyAssists.dart';
 import 'package:aulataller/application/usecases/getMyValuations.dart';
 import 'package:aulataller/application/usecases/loginWithCredentialsUseCase.dart';
 import 'package:aulataller/application/usecases/openDynamicLinkUseCase.dart';
 import 'package:aulataller/application/usecases/registerUserUseCase.dart';
 import 'package:aulataller/application/usecases/saveUserUseCase.dart';
+import 'package:aulataller/application/usecases/updatePassword.dart';
 import 'package:aulataller/domain/repositories/iAuthRepository.dart';
 import 'package:aulataller/domain/repositories/iServicesRepository.dart';
 import 'package:aulataller/infrastructure/datasources/iLocalDataSource.dart';
@@ -27,6 +32,7 @@ import 'package:aulataller/infrastructure/repositories/serviceRepository.dart';
 import 'package:aulataller/presentation/states/account/account_bloc.dart';
 import 'package:aulataller/presentation/states/acomp_psico/psico_bloc.dart';
 import 'package:aulataller/presentation/states/all_services/allServices_bloc.dart';
+import 'package:aulataller/presentation/states/assists/assists_bloc.dart';
 import 'package:aulataller/presentation/states/aula_abierta/aulaAbierta_bloc.dart';
 import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:aulataller/presentation/states/home/home_bloc.dart';
@@ -42,6 +48,7 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'application/boundaries/delete_user/iDeleteUser.dart';
+import 'application/boundaries/update_password/iUpdatePassword.dart';
 import 'application/usecases/getAllServices.dart';
 
 final getIt = GetIt.instance;
@@ -92,6 +99,12 @@ Future<void> setup() async {
       () => GetCurrentUser(authRepository: getIt<IAuthRepository>()));
   getIt.registerLazySingleton<IGetMyValuations>(
       () => GetMyValuations(serviceRepository: getIt<IServicesRepository>()));
+  getIt.registerLazySingleton<IGetMyAssists>(
+      () => GetMyAssists(serviceRepository: getIt<IServicesRepository>()));
+  getIt.registerLazySingleton<IAddNewAssist>(
+      () => AddNewAssist(serviceRepository: getIt<IServicesRepository>()));
+  getIt.registerLazySingleton<IUpdatePassword>(
+      () => UpdatePassword(authRepository: getIt<IAuthRepository>()));
 
   //presentation
   getIt.registerFactory<LoginBloc>(() => LoginBloc(
@@ -124,9 +137,16 @@ Future<void> setup() async {
     () => AllServicesBloc(getAllServices: getIt<IGetAllServices>()),
   );
   getIt.registerFactory<AccountBloc>(
-    () => AccountBloc(getCurrentUser: getIt<IGetCurrentUser>()),
+    () => AccountBloc(
+        getCurrentUser: getIt<IGetCurrentUser>(),
+        updatePassword: getIt<IUpdatePassword>()),
   );
   getIt.registerFactory<ValuationsBloc>(
     () => ValuationsBloc(getMyValuations: getIt<IGetMyValuations>()),
+  );
+  getIt.registerFactory<AssistsBloc>(
+    () => AssistsBloc(
+        addNewAssist: getIt<IAddNewAssist>(),
+        getMyAssists: getIt<IGetMyAssists>()),
   );
 }

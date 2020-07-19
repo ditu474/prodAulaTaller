@@ -42,7 +42,7 @@ class Body extends StatelessWidget {
             );
           }
           if (state.user != null) {
-            return Text(state.user.academicProgram);
+            return Text(state.user.academicProgram ?? "No Aplica");
           }
           if (AccountState() == state) {
             context.bloc<AccountBloc>().add(GetUserFromDatabase());

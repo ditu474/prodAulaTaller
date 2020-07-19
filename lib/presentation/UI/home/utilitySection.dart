@@ -1,4 +1,5 @@
 import 'package:aulataller/presentation/UI/account_info/account_page.dart';
+import 'package:aulataller/presentation/UI/assists/assist_page.dart';
 import 'package:aulataller/presentation/UI/home/sectionGroup.dart';
 import 'package:aulataller/presentation/UI/valuations/valuations_page.dart';
 import 'package:aulataller/presentation/UI/widgets/section.dart';
@@ -27,7 +28,12 @@ class UtilitySection extends StatelessWidget {
         colorMedio: Colors.cyan[500],
       ),
       Section(
-        action: () {},
+        action: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AssistsPage()),
+          );
+        },
         svg: "assets/icons/asistence.svg",
         name: 'Mis Asistencias',
         colorLados: Colors.deepPurple[200],

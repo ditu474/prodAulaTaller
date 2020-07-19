@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:aulataller/application/boundaries/get_current_user/iGetCurrentUser.dart';
+import 'package:aulataller/application/boundaries/update_password/iUpdatePassword.dart';
 import 'package:aulataller/domain/entities/user.dart';
 import 'package:aulataller/presentation/models/confirmPassword.dart';
 import 'package:aulataller/presentation/models/password.dart';
@@ -14,12 +15,15 @@ part 'account_state.dart';
 
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
   IGetCurrentUser _getCurrentUser;
+  IUpdatePassword _updatePassword;
 
-  AccountBloc({@required getCurrentUser})
+  AccountBloc({@required getCurrentUser, @required updatePassword})
       : assert(
           getCurrentUser != null,
+          updatePassword != null,
         ),
-        _getCurrentUser = getCurrentUser;
+        _getCurrentUser = getCurrentUser,
+        _updatePassword = updatePassword;
 
   @override
   AccountState get initialState => AccountState();
@@ -33,7 +37,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       yield* _mapGetUserState();
     } else if (event is ChangePasswordButtonPressed) {
       yield state.copyWith(loading: !state.loading);
-    } else if (event is ConfirmChangePassword) {
+    } else if (event is ConfirmPasswordChange) {
       yield state.copyWith(loading: true);
       yield* _mapChangePasswordState();
     } else if (event is CurrentPasswordChanged) {
@@ -61,7 +65,21 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     }
   }
 
-  Stream<AccountState> _mapChangePasswordState() {}
+  Stream<AccountState> _mapChangePasswordState() async* {
+    UpdatePasswordInput input = UpdatePasswordInput(
+      currentPassword: state.currentPassword.value,
+      newPassword: state.newPassword.value,
+    );
+    final response = await _updatePassword.execute(input);
+    if (response.isLeft()) {
+      yield state.copyWith(
+        error: response.fold((l) => l.message, (r) => null),
+        loading: false,
+      );
+    } else if (response.isRight()) {
+      yield state.copyWith(status: FormzStatus.submissionSuccess);
+    }
+  }
 
   Stream<AccountState> _mapCurrentPasswordState(String currentPassword) async* {
     final _currentPassword = Password.dirty(currentPassword);

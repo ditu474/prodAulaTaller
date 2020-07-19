@@ -12,7 +12,7 @@ abstract class IAuthRepository {
   Future<Either<Failure, String>> getToken();
   Future<Either<Failure, User>> getCurrentUser();
   Future<Either<Failure, String>> updatePassword(
-      {@required String newPassword});
+      {@required String newPassword, @required String currentPassword});
   Future<Either<Failure, bool>> userLogout();
   Future<Either<Failure, String>> forgotPassword({@required String email});
   Future<Either<Failure, User>> resetPassword(

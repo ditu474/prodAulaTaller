@@ -7,17 +7,20 @@ class ValuationModel extends Valuation {
   final String inCharge;
   final int valuation;
   final String detail;
+  final String id;
 
   ValuationModel({
     @required this.attendanceDay,
     @required this.typeOfService,
     @required this.inCharge,
     @required this.valuation,
+    @required this.id,
     this.detail,
   });
 
   factory ValuationModel.fromMap(Map<String, dynamic> map) {
     return new ValuationModel(
+      id: map["_id"],
       attendanceDay: map["idAsistencia"]["fecha"],
       inCharge: map["idAsistencia"]["idServicio"]["encargado"],
       typeOfService: map["idAsistencia"]["idServicio"]["idTipoServicio"]
@@ -29,6 +32,7 @@ class ValuationModel extends Valuation {
 
   Map<String, dynamic> toMap() {
     return {
+      "id": this.id,
       "attendanceDay": this.attendanceDay,
       "inCharge": this.inCharge,
       "typeOfService": this.typeOfService,

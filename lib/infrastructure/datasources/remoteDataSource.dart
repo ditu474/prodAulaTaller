@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:aulataller/domain/entities/assist.dart';
 import 'package:aulataller/domain/entities/aulaAbiertaService.dart';
 import 'package:aulataller/domain/entities/service.dart';
 import 'package:aulataller/domain/entities/user.dart';
 import 'package:aulataller/domain/entities/valuation.dart';
 import 'package:aulataller/infrastructure/datasources/iRemoteDataSource.dart';
+import 'package:aulataller/infrastructure/models/assistsModel.dart';
 import 'package:aulataller/infrastructure/models/exception.dart';
 import 'package:aulataller/infrastructure/models/aulaAbiertaServiceModel.dart';
 import 'package:aulataller/infrastructure/models/serviceModel.dart';
@@ -16,7 +18,7 @@ import 'package:http/http.dart' as http;
 class RemoteDataSource implements IRemoteDataSource {
   final http.Client client;
   final String urlAPI = 'https://rich-solstice-283505.ue.r.appspot.com/api/v1/';
-  // final String urlAPI = 'http://192.168.0.11:3000/';
+  // final String urlLocalAPI = 'http://192.168.0.11:3000/';
 
   RemoteDataSource({@required this.client});
 
@@ -46,7 +48,7 @@ class RemoteDataSource implements IRemoteDataSource {
   }
 
   @override
-  Future<String> forgotPassword({String email}) {
+  Future<String> sendResetToken({String email}) {
     // TODO: implement forgotPassword
     throw UnimplementedError();
   }
@@ -168,6 +170,72 @@ class RemoteDataSource implements IRemoteDataSource {
         return List.from(json.decode(response.body)["data"]["doc"])
             .map((element) => ValuationModel.fromMap(element))
             .toList();
+      } else
+        throw CustomException(json.decode(response.body)["message"]);
+    } catch (e) {
+      throw CustomException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<Assist>> getMyAssists(String token) async {
+    try {
+      final response = await client.get(
+        urlAPI + 'asistencia/me',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      if (response.statusCode == 200) {
+        return List.from(json.decode(response.body)["data"]["doc"])
+            .map((element) => AssistModel.fromMap(element))
+            .toList();
+      } else
+        throw CustomException(json.decode(response.body)["message"]);
+    } catch (e) {
+      throw CustomException(e.toString());
+    }
+  }
+
+  @override
+  Future<Assist> addNewAssist({String code, String token}) async {
+    try {
+      final response = await client.post(
+        urlAPI + 'asistencia/me',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({"codigo": code}),
+      );
+      if (response.statusCode == 200) {
+        return AssistModel.fromMap(json.decode(response.body)["data"]["doc"]);
+      } else
+        throw CustomException(json.decode(response.body)["message"]);
+    } catch (e) {
+      throw CustomException(e.toString());
+    }
+  }
+
+  @override
+  Future<String> updatePassword(
+      {String currentPassword, String newPassword, String token}) async {
+    try {
+      final response = await client.post(
+        urlAPI + 'users/updateMyPassword',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({
+          "passwordCurrent": currentPassword,
+          "password": newPassword,
+          "passwordConfirm": newPassword,
+        }),
+      );
+      if (response.statusCode == 200) {
+        return json.decode(response.body)["token"];
       } else
         throw CustomException(json.decode(response.body)["message"]);
     } catch (e) {

@@ -12,7 +12,7 @@ class GetUserFromDatabase extends AccountEvent {}
 
 class ChangePasswordButtonPressed extends AccountEvent {}
 
-class ConfirmChangePassword extends AccountEvent {}
+class ConfirmPasswordChange extends AccountEvent {}
 
 class CurrentPasswordChanged extends AccountEvent {
   final String currentPassword;
