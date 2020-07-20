@@ -1,5 +1,6 @@
 import 'package:aulataller/utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class SectionGroup extends StatelessWidget {
   final String tittle;
@@ -27,11 +28,13 @@ class SectionGroup extends StatelessWidget {
           color: Colors.black,
         ),
         SizedBox(height: responsive.heigthPercent(2)),
-        GridView.count(
+        StaggeredGridView.countBuilder(
+          itemCount: items.length,
           primary: false,
           crossAxisCount: 3,
-          children: items,
+          itemBuilder: (ctx, i) => items[i],
           shrinkWrap: true,
+          staggeredTileBuilder: (i) => StaggeredTile.fit(1),
         ),
       ],
     );

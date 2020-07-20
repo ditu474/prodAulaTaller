@@ -52,12 +52,10 @@ class Section extends StatelessWidget {
           Text(
             name,
             textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               height: 1,
               fontWeight: FontWeight.w700,
-              fontSize: responsive.heigthPercent(1.8),
+              fontSize: responsive.heigthPercent(1.75),
             ),
           ),
         ],
