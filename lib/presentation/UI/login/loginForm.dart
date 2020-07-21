@@ -45,34 +45,38 @@ class _LoginFormState extends State<LoginForm> {
             right: responsive.widthPercent(5),
             left: responsive.widthPercent(5),
           ),
-          child: Column(children: [
-            CustomInputForm(
-              hint: 'Email',
-              icon: Icons.email,
-              obscure: false,
-              keyboard: TextInputType.emailAddress,
-              errorMsg: state.email.value == ''
-                  ? null
-                  : state.email.valid ? null : 'Email inválido',
-              onChangeFunction: (value) {
-                context.bloc<LoginBloc>().add(EmailChanged(email: value));
-              },
-            ),
-            SizedBox(height: responsive.heigthPercent(2.1)),
-            CustomInputForm(
-              hint: 'Contraseña',
-              icon: Icons.enhanced_encryption,
-              obscure: true,
-              keyboard: TextInputType.text,
-              errorMsg: state.password.value == ''
-                  ? null
-                  : state.password.valid ? null : 'Contraseña inválida',
-              onChangeFunction: (value) {
-                context.bloc<LoginBloc>().add(PasswordChanged(password: value));
-              },
-            ),
-            SizedBox(height: responsive.heigthPercent(5)),
-            GradientButton(
+          child: Column(
+            children: [
+              CustomInputForm(
+                hint: 'Email',
+                icon: Icons.email,
+                obscure: false,
+                keyboard: TextInputType.emailAddress,
+                errorMsg: state.email.value == ''
+                    ? null
+                    : state.email.valid ? null : 'Email inválido',
+                onChangeFunction: (value) {
+                  context.bloc<LoginBloc>().add(EmailChanged(email: value));
+                },
+              ),
+              SizedBox(height: responsive.heigthPercent(2.1)),
+              CustomInputForm(
+                hint: 'Contraseña',
+                icon: Icons.enhanced_encryption,
+                obscure: true,
+                keyboard: TextInputType.text,
+                errorMsg: state.password.value == ''
+                    ? null
+                    : state.password.valid ? null : 'Contraseña inválida',
+                onChangeFunction: (value) {
+                  context
+                      .bloc<LoginBloc>()
+                      .add(PasswordChanged(password: value));
+                },
+              ),
+              SizedBox(height: responsive.heigthPercent(5)),
+              GradientButton(
+                isEnabled: state.status.isValidated,
                 inputText: 'Ingresar',
                 buttonHandler: () {
                   if (state.status.isValidated) {
@@ -80,8 +84,10 @@ class _LoginFormState extends State<LoginForm> {
                         .bloc<LoginBloc>()
                         .add(LoginWithCredentialsButtonPressed());
                   }
-                }),
-          ]),
+                },
+              ),
+            ],
+          ),
         );
       },
     );

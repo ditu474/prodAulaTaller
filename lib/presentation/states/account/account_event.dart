@@ -10,8 +10,6 @@ abstract class AccountEvent extends Equatable {
 
 class GetUserFromDatabase extends AccountEvent {}
 
-class ChangePasswordButtonPressed extends AccountEvent {}
-
 class ConfirmPasswordChange extends AccountEvent {}
 
 class CurrentPasswordChanged extends AccountEvent {

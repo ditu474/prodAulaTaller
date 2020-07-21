@@ -14,7 +14,8 @@ class LocalDataSource implements ILocalDataSource {
     if (token != null)
       return token;
     else
-      throw CustomException('No se logró recuperar el token');
+      throw CustomException(
+          'No se logró encontrar un usuario activo, ingresa nuevamente');
   }
 
   @override
@@ -23,7 +24,8 @@ class LocalDataSource implements ILocalDataSource {
       final response = await sharedPreferences.setString("token", token);
       return response;
     } catch (e) {
-      throw CustomException('No se logró guardar el token');
+      throw CustomException(
+          'No se logró registrar el usuario en el dispositivo');
     }
   }
 

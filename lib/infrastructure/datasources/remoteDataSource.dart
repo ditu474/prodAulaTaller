@@ -17,7 +17,8 @@ import 'package:http/http.dart' as http;
 
 class RemoteDataSource implements IRemoteDataSource {
   final http.Client client;
-  final String urlAPI = 'https://rich-solstice-283505.ue.r.appspot.com/api/v1/';
+  final String urlAPI =
+      'https://aulataller-api-iilx44yojq-uk.a.run.app/api/v1/';
   // final String urlLocalAPI = 'http://192.168.0.11:3000/';
 
   RemoteDataSource({@required this.client});
@@ -163,7 +164,8 @@ class RemoteDataSource implements IRemoteDataSource {
         urlAPI + 'valoracion/me',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYTM1NGVmMTBmZjIwNWFlYjI3Njg1NyIsImlhdCI6MTU5NTI5MzM4MywiZXhwIjoxNTk3ODg1MzgzfQ.dYw650jECzpI4TE-8b7FbFrdZL3NMFIXsFqnF3cjc0Q',
         },
       );
       if (response.statusCode == 200) {
@@ -181,10 +183,11 @@ class RemoteDataSource implements IRemoteDataSource {
   Future<List<Assist>> getMyAssists(String token) async {
     try {
       final response = await client.get(
-        urlAPI + 'asistencia/me',
+        urlAPI + 'asistencia/me?sort=-fecha',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization':
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYTM1NGVmMTBmZjIwNWFlYjI3Njg1NyIsImlhdCI6MTU5NTI5MzM4MywiZXhwIjoxNTk3ODg1MzgzfQ.dYw650jECzpI4TE-8b7FbFrdZL3NMFIXsFqnF3cjc0Q',
         },
       );
       if (response.statusCode == 200) {
@@ -202,7 +205,7 @@ class RemoteDataSource implements IRemoteDataSource {
   Future<Assist> addNewAssist({String code, String token}) async {
     try {
       final response = await client.post(
-        urlAPI + 'asistencia/me',
+        urlAPI + 'asistencia',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

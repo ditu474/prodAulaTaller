@@ -35,10 +35,8 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     if (event is GetUserFromDatabase) {
       yield state.copyWith(loading: true);
       yield* _mapGetUserState();
-    } else if (event is ChangePasswordButtonPressed) {
-      yield state.copyWith(loading: !state.loading);
     } else if (event is ConfirmPasswordChange) {
-      yield state.copyWith(loading: true);
+      yield state.copyWith(status: FormzStatus.submissionInProgress);
       yield* _mapChangePasswordState();
     } else if (event is CurrentPasswordChanged) {
       yield* _mapCurrentPasswordState(event.currentPassword);
@@ -74,7 +72,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     if (response.isLeft()) {
       yield state.copyWith(
         error: response.fold((l) => l.message, (r) => null),
-        loading: false,
+        status: FormzStatus.submissionFailure,
       );
     } else if (response.isRight()) {
       yield state.copyWith(status: FormzStatus.submissionSuccess);
@@ -112,7 +110,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   Stream<AccountState> _mapPasswordConfirmState(String confirmPassword) async* {
     final _confirmPassword = ConfirmPassword.dirty(
-      value: state.confirmPassword.value,
+      value: confirmPassword,
       password: state.newPassword.value,
     );
     yield state.copyWith(

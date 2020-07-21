@@ -19,7 +19,7 @@ class Assist {
         this._inCharge = inCharge,
         this._id = id;
 
-  bool get value => this._valued;
+  bool get valued => this._valued;
   String get date => this._date;
   String get typeOfService => this._typeOfService;
   String get inCharge => this._inCharge;

@@ -72,6 +72,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         );
       }
     }
+    yield* _mapTypeOfUserChangedToState(state.typeOfUser.value);
   }
 
   Stream<RegisterState> _mapEmailChangedToState(String eventEmail) async* {
@@ -280,21 +281,55 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     final typeOfUser = TypeOfUser.dirty(
       eventTypeOfUser,
     );
-    yield state.copyWith(
-      typeOfUser: typeOfUser,
-      status: Formz.validate([
-        state.email,
-        state.password,
-        state.academicProgram,
-        state.campus,
-        state.confirmPassword,
-        state.document,
-        state.name,
-        state.semester,
-        state.typeOfDocument,
-        typeOfUser
-      ]),
-    );
+
+    if (typeOfUser.value == "estudiante") {
+      yield* _mapAcademicProgramChangedToState(state.academicProgram.value);
+      yield* _mapSemesterChangedToState(state.semester.value);
+      yield* _mapCampusChangedToState(state.campus.value);
+      yield state.copyWith(
+        typeOfUser: typeOfUser,
+        status: Formz.validate([
+          state.email,
+          state.password,
+          state.academicProgram,
+          state.campus,
+          state.confirmPassword,
+          state.document,
+          state.name,
+          state.semester,
+          state.typeOfDocument,
+          typeOfUser
+        ]),
+      );
+    } else if (typeOfUser.value == "docente") {
+      yield* _mapCampusChangedToState(state.campus.value);
+      yield state.copyWith(
+        typeOfUser: typeOfUser,
+        status: Formz.validate([
+          state.email,
+          state.password,
+          state.campus,
+          state.confirmPassword,
+          state.document,
+          state.name,
+          state.typeOfDocument,
+          typeOfUser
+        ]),
+      );
+    } else if (typeOfUser.value == "externo") {
+      yield state.copyWith(
+        typeOfUser: typeOfUser,
+        status: Formz.validate([
+          state.email,
+          state.password,
+          state.confirmPassword,
+          state.document,
+          state.name,
+          state.typeOfDocument,
+          typeOfUser
+        ]),
+      );
+    }
   }
 
   Stream<RegisterState> _mapRegisterToState(
@@ -319,8 +354,15 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         academicProgram: academicProgram);
     var response = await _registerUser.execute(user);
     if (response.isRight()) {
-      await _saveUser.execute(response.getOrElse(null));
-      yield state.copyWith(status: FormzStatus.submissionSuccess);
+      final tokenSaved = await _saveUser.execute(response.getOrElse(null));
+      if (tokenSaved.isLeft()) {
+        yield state.copyWith(
+          status: FormzStatus.submissionFailure,
+          error: tokenSaved.fold((l) => l.message, (r) => null),
+        );
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionSuccess);
+      }
     } else {
       yield state.copyWith(
           status: FormzStatus.submissionFailure,

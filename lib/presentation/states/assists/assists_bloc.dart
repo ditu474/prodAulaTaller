@@ -7,6 +7,7 @@ import 'package:aulataller/presentation/models/code.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
 
 part 'assists_event.dart';
 part 'assists_state.dart';
@@ -35,9 +36,8 @@ class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
     if (event is GetAssists) {
       yield state.copyWith(loading: true);
       yield* _mapGetAssistsState();
-    }
-    if (event is AddAssistButtonPressed) {
-      yield state.copyWith(loading: true);
+    } else if (event is AddAssistButtonPressed) {
+      yield state.copyWith(status: FormzStatus.submissionInProgress);
       yield* _mapAddAssistState();
     } else if (event is CodeChanged) {
       yield* _mapCodeChangeState(event.code);
@@ -65,9 +65,13 @@ class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
     if (response.isLeft()) {
       yield state.copyWith(
         error: response.fold((l) => l.message, (r) => null),
-        loading: false,
+        status: FormzStatus.submissionInProgress,
       );
     } else if (response.isRight()) {
+      yield state.copyWith(
+        status: FormzStatus.submissionSuccess,
+        loading: true,
+      );
       yield* _mapGetAssistsState();
     }
   }
@@ -76,6 +80,7 @@ class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
     final _code = Code.dirty(code);
     yield state.copyWith(
       code: _code,
+      status: Formz.validate([_code]),
     );
   }
 }

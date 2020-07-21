@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 class GradientButton extends StatelessWidget {
   final Function buttonHandler;
   final String inputText;
+  final bool isEnabled;
 
-  const GradientButton(
-      {Key key, @required this.buttonHandler, @required this.inputText})
-      : super(key: key);
+  const GradientButton({
+    Key key,
+    @required this.buttonHandler,
+    @required this.inputText,
+    @required this.isEnabled,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +32,13 @@ class GradientButton extends StatelessWidget {
           vertical: responsive.inchPercent(1.3),
         ),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(responsive.inchPercent(3)),
-            gradient: LinearGradient(colors: [
-              Colors.orange[200],
-              Colors.orange[400],
-              Colors.orange[600]
-            ])),
+          borderRadius: BorderRadius.circular(responsive.inchPercent(3)),
+          gradient: LinearGradient(
+            colors: isEnabled
+                ? [Colors.orange[200], Colors.orange[400], Colors.orange[600]]
+                : [Colors.grey[200], Colors.grey[400], Colors.grey[600]],
+          ),
+        ),
         child: Center(
           child: Text(
             inputText,

@@ -1,7 +1,7 @@
 import 'package:aulataller/injection_container.dart';
+import 'package:aulataller/presentation/UI/account_info/account_body.dart';
 import 'package:aulataller/presentation/UI/widgets/defaultBackground.dart';
 import 'package:aulataller/presentation/states/account/account_bloc.dart';
-import 'package:aulataller/utils/customSnackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +14,12 @@ class AccountInfoPage extends StatelessWidget {
       ),
       body: BlocProvider<AccountBloc>(
         create: (context) => getIt<AccountBloc>(),
-        child: Body(),
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Body(),
+        ),
       ),
     );
   }
@@ -28,13 +33,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultBackground(
-      child: BlocConsumer<AccountBloc, AccountState>(
-        listener: (context, state) {
-          if (state.error != "") {
-            CustomSnackBar.showErrorSnackBar(
-                ctx: context, leftWidget: Text(state.error));
-          }
-        },
+      child: BlocBuilder<AccountBloc, AccountState>(
         builder: (context, state) {
           if (state.loading) {
             return Center(
@@ -42,7 +41,10 @@ class Body extends StatelessWidget {
             );
           }
           if (state.user != null) {
-            return Text(state.user.academicProgram ?? "No Aplica");
+            return SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: AccountBody(state.user),
+            );
           }
           if (AccountState() == state) {
             context.bloc<AccountBloc>().add(GetUserFromDatabase());

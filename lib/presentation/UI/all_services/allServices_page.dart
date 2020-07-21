@@ -1,4 +1,5 @@
 import 'package:aulataller/injection_container.dart';
+import 'package:aulataller/presentation/UI/all_services/service_item.dart';
 import 'package:aulataller/presentation/UI/widgets/defaultBackground.dart';
 import 'package:aulataller/presentation/states/all_services/allServices_bloc.dart';
 import 'package:aulataller/utils/customSnackBar.dart';
@@ -15,7 +16,7 @@ class AllServicesPage extends StatelessWidget {
       ),
       body: BlocProvider<AllServicesBloc>(
         create: (context) => getIt<AllServicesBloc>(),
-        child: Body(),
+        child: DefaultBackground(child: Body()),
       ),
     );
   }
@@ -34,7 +35,8 @@ class Body extends StatelessWidget {
       },
       builder: (context, state) {
         if (state.services != null) {
-          return DefaultBackground(
+          return SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.only(
                 left: responsive.widthPercent(5),
@@ -44,12 +46,24 @@ class Body extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Text(
-                    state.services.map((e) => e.name).toList().toString(),
+                    'A continuación se encuentra el listado de todos los servicios ofrecidos en el aula taller, si quieres saber mas acerca de ellos, escribenos al correo: aulataller@elpoli.edu.co',
                     style: TextStyle(
                       fontSize: responsive.inchPercent(2.5),
                       height: 1.3,
                     ),
                     textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: responsive.heigthPercent(2)),
+                  ListView.builder(
+                    physics: ScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemCount: state.services.length,
+                    itemBuilder: (ctx, index) => ServiceItem(
+                      name: state.services[index].name,
+                      privacy: state.services[index].privacy,
+                    ),
                   ),
                 ],
               ),

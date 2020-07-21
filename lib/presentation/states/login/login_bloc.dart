@@ -58,8 +58,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     var credentials = LoginCredentialsInput(email: email, password: password);
     var response = await _loginWithCredentials.execute(credentials);
     if (response.isRight()) {
-      await _saveUser.execute(response.getOrElse(null));
-      yield state.copyWith(status: FormzStatus.submissionSuccess);
+      final tokenSaved = await _saveUser.execute(response.getOrElse(null));
+      if (tokenSaved.isLeft()) {
+        yield state.copyWith(
+          status: FormzStatus.submissionFailure,
+          error: tokenSaved.fold((l) => l.message, (r) => null),
+        );
+      } else {
+        yield state.copyWith(status: FormzStatus.submissionSuccess);
+      }
     } else {
       yield state.copyWith(
           status: FormzStatus.submissionFailure,

@@ -21,6 +21,7 @@ class _RegisterFormState extends State<RegisterForm> {
     final IResponsive responsive = Responsive.of(context);
     return BlocConsumer<RegisterBloc, RegisterState>(
       listener: (context, state) {
+        print(state.status.toString());
         if (state.status.isSubmissionInProgress) {
           CustomSnackBar.showLoadingSnackBar(
             ctx: context,
@@ -170,7 +171,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 keyboard: TextInputType.text,
                 errorMsg: state.password.value == ''
                     ? null
-                    : state.password.valid ? null : 'Contraseña insegura',
+                    : state.password.valid ? null : 'Contraseña invalida',
                 onChangeFunction: (value) {
                   context
                       .bloc<RegisterBloc>()
@@ -205,6 +206,7 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               SizedBox(height: responsive.heigthPercent(3)),
               GradientButton(
+                isEnabled: state.status.isValidated,
                 inputText: 'Registrarme',
                 buttonHandler: () {
                   if (!state.status.isSubmissionInProgress &&
