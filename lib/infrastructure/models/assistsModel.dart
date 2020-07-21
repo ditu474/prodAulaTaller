@@ -13,7 +13,7 @@ class AssistModel extends Assist {
     @required this.date,
     @required this.typeOfService,
     @required this.inCharge,
-    @required this.id,
+    this.id,
   });
 
   factory AssistModel.fromMap(Map<String, dynamic> map) {

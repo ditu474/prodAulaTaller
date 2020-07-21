@@ -18,9 +18,14 @@ class AssistsPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(title: Text('Asistencias')),
         body: DefaultBackground(
-          child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child: Body(),
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Body(),
+            ),
           ),
         ),
       ),
@@ -37,7 +42,7 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AssistsBloc, AssistsState>(
       listener: (context, state) {
-        if (state.status.isSubmissionFailure) {
+        if (state.error != "") {
           CustomSnackBar.showErrorSnackBar(
             ctx: context,
             leftWidget: Text(state.error),
@@ -53,66 +58,6 @@ class Body extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state.assists != null) {
-          if (state.assists.length > 0) {
-            final responsive = Responsive.of(context);
-            return Container(
-              margin: EdgeInsets.all(responsive.inchPercent(1)),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin:
-                        EdgeInsets.only(bottom: responsive.heigthPercent(1)),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        responsive.inchPercent(3),
-                      ),
-                      color: Colors.green,
-                    ),
-                    child: CustomInputForm(
-                      hint: 'Código',
-                      icon: Icons.add,
-                      obscure: false,
-                      onChangeFunction: (value) {
-                        context
-                            .bloc<AssistsBloc>()
-                            .add(CodeChanged(code: value));
-                      },
-                      keyboard: TextInputType.text,
-                      errorMsg: state.code.value == ''
-                          ? null
-                          : state.code.valid ? null : 'Codigo inválido',
-                    ),
-                  ),
-                  GradientButton(
-                    isEnabled: state.status.isValidated,
-                    inputText: 'Registrar asistencia',
-                    buttonHandler: () {
-                      if (state.status.isValidated) {
-                        context
-                            .bloc<AssistsBloc>()
-                            .add(AddAssistButtonPressed());
-                      }
-                    },
-                  ),
-                  ListView.builder(
-                    primary: false,
-                    itemBuilder: (ctx, i) => AssistItem(
-                      assist: state.assists[i],
-                    ),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: state.assists.length,
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return Center(
-              child: Text('No Haz Registrado Ninguna Asistencia Aún'),
-            );
-          }
-        }
         if (AssistsState() == state) {
           context.bloc<AssistsBloc>().add(GetAssists());
         }
@@ -121,7 +66,64 @@ class Body extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        return SizedBox();
+        final responsive = Responsive.of(context);
+        return Container(
+          margin: EdgeInsets.all(responsive.inchPercent(1)),
+          child: Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(bottom: responsive.heigthPercent(1)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    responsive.inchPercent(3),
+                  ),
+                  color: Colors.green,
+                ),
+                child: CustomInputForm(
+                  hint: 'Código',
+                  icon: Icons.add,
+                  obscure: false,
+                  onChangeFunction: (value) {
+                    context.bloc<AssistsBloc>().add(CodeChanged(code: value));
+                  },
+                  keyboard: TextInputType.text,
+                  errorMsg: state.code.value == ''
+                      ? null
+                      : state.code.valid ? null : 'Codigo inválido',
+                ),
+              ),
+              GradientButton(
+                isEnabled: state.status.isValidated,
+                inputText: 'Registrar asistencia',
+                buttonHandler: () {
+                  if (state.status.isValidated) {
+                    context.bloc<AssistsBloc>().add(AddAssistButtonPressed());
+                  }
+                },
+              ),
+              state.assists != null
+                  ? state.assists.length > 0
+                      ? ListView.builder(
+                          primary: false,
+                          itemBuilder: (ctx, i) => AssistItem(
+                            assist: state.assists[i],
+                          ),
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: state.assists.length,
+                        )
+                      : Container(
+                          margin:
+                              EdgeInsets.only(top: responsive.heigthPercent(2)),
+                          child: Center(
+                            child: Text(
+                                'No Haz Registrado Ninguna Asistencia Aún'),
+                          ),
+                        )
+                  : SizedBox()
+            ],
+          ),
+        );
       },
     );
   }

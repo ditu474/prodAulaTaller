@@ -1,4 +1,5 @@
 import 'package:aulataller/injection_container.dart';
+import 'package:aulataller/presentation/UI/valuations/valuation_item.dart';
 import 'package:aulataller/presentation/UI/widgets/defaultBackground.dart';
 import 'package:aulataller/presentation/states/valuations/valuations_bloc.dart';
 import 'package:aulataller/utils/customSnackBar.dart';
@@ -39,10 +40,12 @@ class Body extends StatelessWidget {
       builder: (context, state) {
         if (state.valuations != null) {
           if (state.valuations.length > 0) {
-            return Column(
-              children: state.valuations
-                  .map((element) => Text(element.attendanceDay))
-                  .toList(),
+            return ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (ctx, i) => ValuationItem(state.valuations[i]),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: state.valuations.length,
             );
           } else {
             return Center(

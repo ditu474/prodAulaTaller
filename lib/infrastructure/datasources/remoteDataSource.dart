@@ -164,8 +164,7 @@ class RemoteDataSource implements IRemoteDataSource {
         urlAPI + 'valoracion/me',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYTM1NGVmMTBmZjIwNWFlYjI3Njg1NyIsImlhdCI6MTU5NTI5MzM4MywiZXhwIjoxNTk3ODg1MzgzfQ.dYw650jECzpI4TE-8b7FbFrdZL3NMFIXsFqnF3cjc0Q',
+          'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 200) {
@@ -186,8 +185,7 @@ class RemoteDataSource implements IRemoteDataSource {
         urlAPI + 'asistencia/me?sort=-fecha',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlYTM1NGVmMTBmZjIwNWFlYjI3Njg1NyIsImlhdCI6MTU5NTI5MzM4MywiZXhwIjoxNTk3ODg1MzgzfQ.dYw650jECzpI4TE-8b7FbFrdZL3NMFIXsFqnF3cjc0Q',
+          'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 200) {
@@ -212,8 +210,13 @@ class RemoteDataSource implements IRemoteDataSource {
         },
         body: json.encode({"codigo": code}),
       );
-      if (response.statusCode == 200) {
-        return AssistModel.fromMap(json.decode(response.body)["data"]["doc"]);
+      if (response.statusCode == 201) {
+        return AssistModel(
+            date: null,
+            inCharge: null,
+            typeOfService: null,
+            valued: null,
+            id: null);
       } else
         throw CustomException(json.decode(response.body)["message"]);
     } catch (e) {

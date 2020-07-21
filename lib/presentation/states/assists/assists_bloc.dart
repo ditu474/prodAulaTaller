@@ -34,10 +34,10 @@ class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
     AssistsEvent event,
   ) async* {
     if (event is GetAssists) {
-      yield state.copyWith(loading: true);
+      yield state.copyWith(loading: true, error: "");
       yield* _mapGetAssistsState();
     } else if (event is AddAssistButtonPressed) {
-      yield state.copyWith(status: FormzStatus.submissionInProgress);
+      yield state.copyWith(status: FormzStatus.submissionInProgress, error: "");
       yield* _mapAddAssistState();
     } else if (event is CodeChanged) {
       yield* _mapCodeChangeState(event.code);
@@ -65,10 +65,11 @@ class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
     if (response.isLeft()) {
       yield state.copyWith(
         error: response.fold((l) => l.message, (r) => null),
-        status: FormzStatus.submissionInProgress,
+        status: FormzStatus.submissionFailure,
       );
     } else if (response.isRight()) {
       yield state.copyWith(
+        error: "",
         status: FormzStatus.submissionSuccess,
         loading: true,
       );
@@ -81,6 +82,7 @@ class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
     yield state.copyWith(
       code: _code,
       status: Formz.validate([_code]),
+      error: "",
     );
   }
 }
