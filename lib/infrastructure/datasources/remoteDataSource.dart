@@ -49,15 +49,48 @@ class RemoteDataSource implements IRemoteDataSource {
   }
 
   @override
-  Future<String> sendResetToken({String email}) {
-    // TODO: implement forgotPassword
-    throw UnimplementedError();
+  Future<String> sendResetToken({String email}) async {
+    try {
+      String url = urlAPI + 'users/forgotPassword';
+      final response = await client.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({"correo": email}),
+      );
+      if (response.statusCode == 200) {
+        final body = json.decode(response.body);
+        return body["status"];
+      } else
+        throw CustomException(json.decode(response.body)["message"]);
+    } catch (e) {
+      throw CustomException(e.toString());
+    }
   }
 
   @override
-  Future<User> resetPassword({String password, String resetToken}) {
-    // TODO: implement resetPassword
-    throw UnimplementedError();
+  Future<User> resetPassword({String password, String resetToken}) async {
+    try {
+      String url = urlAPI + 'users/resetPassword/$resetToken';
+      final response = await client.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          "password": password,
+          "passwordConfirm": password,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final body = json.decode(response.body);
+        return UserModel.fromMap(body["data"]["user"], body["token"]);
+      } else
+        throw CustomException(json.decode(response.body)["message"]);
+    } catch (e) {
+      throw CustomException(e.toString());
+    }
   }
 
   @override

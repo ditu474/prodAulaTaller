@@ -34,16 +34,35 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
-  Future<Either<Failure, String>> forgotPassword({String email}) {
-    // TODO: implement forgotPassword
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> forgotPassword({String email}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response = await remoteDataSource.sendResetToken(email: email);
+        return Right(response.isNotEmpty);
+      } catch (e) {
+        return Left(Failure(e.toString()));
+      }
+    } else {
+      return Left(Failure('No tienes conexión a internet'));
+    }
   }
 
   @override
   Future<Either<Failure, User>> resetPassword(
-      {String password, String resetToken}) {
-    // TODO: implement resetPassword
-    throw UnimplementedError();
+      {String password, String resetToken}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response = await remoteDataSource.resetPassword(
+          resetToken: resetToken,
+          password: password,
+        );
+        return Right(response);
+      } catch (e) {
+        return Left(Failure(e.toString()));
+      }
+    } else {
+      return Left(Failure('No tienes conexión a internet'));
+    }
   }
 
   @override

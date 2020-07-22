@@ -9,7 +9,9 @@ import 'package:aulataller/application/boundaries/get_token/iGetLastUser.dart';
 import 'package:aulataller/application/boundaries/login_with_credentials/iLoginWithCredentials.dart';
 import 'package:aulataller/application/boundaries/open_dynamic_link/iOpenDynamicLink.dart';
 import 'package:aulataller/application/boundaries/register_user/iRegisterUser.dart';
+import 'package:aulataller/application/boundaries/reset_password/iReset_password.dart';
 import 'package:aulataller/application/boundaries/save_user/iSaveUser.dart';
+import 'package:aulataller/application/boundaries/send_recovery_token/iSend_recovery_token.dart';
 import 'package:aulataller/application/usecases/addAssist.dart';
 import 'package:aulataller/application/usecases/addNewValuation.dart';
 import 'package:aulataller/application/usecases/deleteUserUseCase.dart';
@@ -21,7 +23,9 @@ import 'package:aulataller/application/usecases/getMyValuations.dart';
 import 'package:aulataller/application/usecases/loginWithCredentialsUseCase.dart';
 import 'package:aulataller/application/usecases/openDynamicLinkUseCase.dart';
 import 'package:aulataller/application/usecases/registerUserUseCase.dart';
+import 'package:aulataller/application/usecases/reset_password.dart';
 import 'package:aulataller/application/usecases/saveUserUseCase.dart';
+import 'package:aulataller/application/usecases/sendRecoveryToken.dart';
 import 'package:aulataller/application/usecases/updatePassword.dart';
 import 'package:aulataller/domain/repositories/iAuthRepository.dart';
 import 'package:aulataller/domain/repositories/iServicesRepository.dart';
@@ -37,6 +41,7 @@ import 'package:aulataller/presentation/states/all_services/allServices_bloc.dar
 import 'package:aulataller/presentation/states/assists/assists_bloc.dart';
 import 'package:aulataller/presentation/states/aula_abierta/aulaAbierta_bloc.dart';
 import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
+import 'package:aulataller/presentation/states/forgot_password/forgot_pass_bloc.dart';
 import 'package:aulataller/presentation/states/home/home_bloc.dart';
 import 'package:aulataller/presentation/states/login/login_bloc.dart';
 import 'package:aulataller/presentation/states/register/register_bloc.dart';
@@ -109,6 +114,10 @@ Future<void> setup() async {
       () => UpdatePassword(authRepository: getIt<IAuthRepository>()));
   getIt.registerLazySingleton<IAddNewValuation>(
       () => AddNewValuation(serviceRepository: getIt<IServicesRepository>()));
+  getIt.registerLazySingleton<ISendRecoveryToken>(
+      () => SendRecoveryToken(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<IResetPassword>(
+      () => ResetPassword(authRepository: getIt<IAuthRepository>()));
 
   //presentation
   getIt.registerFactory<LoginBloc>(() => LoginBloc(
@@ -156,4 +165,8 @@ Future<void> setup() async {
         addNewAssist: getIt<IAddNewAssist>(),
         getMyAssists: getIt<IGetMyAssists>()),
   );
+  getIt.registerFactory<ForgotPassBloc>(() => ForgotPassBloc(
+        resetPassword: getIt<IResetPassword>(),
+        sendRecoveryToken: getIt<ISendRecoveryToken>(),
+      ));
 }

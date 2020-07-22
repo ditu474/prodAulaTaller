@@ -14,7 +14,7 @@ abstract class IAuthRepository {
   Future<Either<Failure, String>> updatePassword(
       {@required String newPassword, @required String currentPassword});
   Future<Either<Failure, bool>> userLogout();
-  Future<Either<Failure, String>> forgotPassword({@required String email});
+  Future<Either<Failure, bool>> forgotPassword({@required String email});
   Future<Either<Failure, User>> resetPassword(
       {@required String password, @required String resetToken});
   Future<Either<Failure, User>> register({@required User newUser});

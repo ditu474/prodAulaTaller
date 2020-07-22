@@ -20,3 +20,5 @@ class CodeChanged extends AssistsEvent {
   @override
   List<Object> get props => [code];
 }
+
+class AssistChange extends AssistsEvent {}

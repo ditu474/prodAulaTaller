@@ -1,4 +1,5 @@
 import 'package:aulataller/injection_container.dart';
+import 'package:aulataller/presentation/UI/forgot_password/forgot_pass_page.dart';
 import 'package:aulataller/presentation/UI/login/loginForm.dart';
 import 'package:aulataller/presentation/UI/login/logo.dart';
 import 'package:aulataller/presentation/UI/login/socialMedia.dart';
@@ -55,7 +56,13 @@ class Body extends StatelessWidget {
                   SizedBox(height: responsive.heigthPercent(2)),
                   CustomTextNavigation(
                     text: 'Olvidaste tu contraseña?',
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPasswordPage()),
+                      );
+                    },
                   ),
                   SizedBox(height: responsive.heigthPercent(1)),
                   CustomTextNavigation(

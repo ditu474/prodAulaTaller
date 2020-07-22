@@ -52,6 +52,7 @@ class Body extends StatelessWidget {
         if (state.status.isSubmissionSuccess) {
           CustomSnackBar.showSuccessSnackBar(
               ctx: context, leftWidget: Text('Asistencia creada'));
+          context.bloc<AssistsBloc>().add(AssistChange());
         }
       },
       builder: (context, state) {

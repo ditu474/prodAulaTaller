@@ -30,7 +30,7 @@ class ChangePasswordForm extends StatelessWidget {
           CustomSnackBar.showSuccessSnackBar(
             ctx: context,
             leftWidget:
-                Text('Se ha cambiado tu contraseña, ingresa nuevamente'),
+                Text('Se ha cambiado tu contraseña, ingresa nuevamente.'),
           );
           context.bloc<AuthBloc>().add(AuthenticationLoggedOut());
         }

@@ -28,7 +28,7 @@ class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
         _addNewAssist = addNewAssist {
     valuationsBlocSuscription = valuationsBloc.listen((state) {
       if (state.status.isSubmissionSuccess) {
-        add(GetAssists());
+        add(AssistChange());
       }
     });
   }
@@ -41,17 +41,19 @@ class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
     AssistsEvent event,
   ) async* {
     if (event is GetAssists) {
-      yield state.copyWith(loading: true, error: "");
       yield* _mapGetAssistsState();
     } else if (event is AddAssistButtonPressed) {
       yield state.copyWith(status: FormzStatus.submissionInProgress, error: "");
       yield* _mapAddAssistState();
     } else if (event is CodeChanged) {
       yield* _mapCodeChangeState(event.code);
+    } else if (event is AssistChange) {
+      yield new AssistsState();
     }
   }
 
   Stream<AssistsState> _mapGetAssistsState() async* {
+    yield state.copyWith(loading: true, error: "");
     final response = await _getMyAssists.execute(null);
     if (response.isLeft()) {
       yield state.copyWith(
@@ -76,11 +78,8 @@ class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
       );
     } else if (response.isRight()) {
       yield state.copyWith(
-        error: "",
         status: FormzStatus.submissionSuccess,
-        loading: true,
       );
-      yield* _mapGetAssistsState();
     }
   }
 
