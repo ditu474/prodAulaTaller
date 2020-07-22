@@ -22,10 +22,7 @@ class AssistsPage extends StatelessWidget {
             onTap: () {
               FocusScope.of(context).requestFocus(FocusNode());
             },
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Body(),
-            ),
+            child: Body(),
           ),
         ),
       ),
@@ -67,61 +64,65 @@ class Body extends StatelessWidget {
           );
         }
         final responsive = Responsive.of(context);
-        return Container(
-          margin: EdgeInsets.all(responsive.inchPercent(1)),
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(bottom: responsive.heigthPercent(1)),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    responsive.inchPercent(3),
+        return SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Container(
+            margin: EdgeInsets.all(responsive.inchPercent(1)),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(bottom: responsive.heigthPercent(1)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(
+                      responsive.inchPercent(3),
+                    ),
+                    color: Colors.green,
                   ),
-                  color: Colors.green,
+                  child: CustomInputForm(
+                    hint: 'Código',
+                    icon: Icons.add,
+                    obscure: false,
+                    onChangeFunction: (value) {
+                      context.bloc<AssistsBloc>().add(CodeChanged(code: value));
+                    },
+                    keyboard: TextInputType.text,
+                    errorMsg: state.code.value == ''
+                        ? null
+                        : state.code.valid ? null : 'Codigo inválido',
+                  ),
                 ),
-                child: CustomInputForm(
-                  hint: 'Código',
-                  icon: Icons.add,
-                  obscure: false,
-                  onChangeFunction: (value) {
-                    context.bloc<AssistsBloc>().add(CodeChanged(code: value));
+                GradientButton(
+                  isEnabled: state.status.isValidated,
+                  inputText: 'Registrar asistencia',
+                  buttonHandler: () {
+                    if (state.status.isValidated) {
+                      context.bloc<AssistsBloc>().add(AddAssistButtonPressed());
+                    }
                   },
-                  keyboard: TextInputType.text,
-                  errorMsg: state.code.value == ''
-                      ? null
-                      : state.code.valid ? null : 'Codigo inválido',
                 ),
-              ),
-              GradientButton(
-                isEnabled: state.status.isValidated,
-                inputText: 'Registrar asistencia',
-                buttonHandler: () {
-                  if (state.status.isValidated) {
-                    context.bloc<AssistsBloc>().add(AddAssistButtonPressed());
-                  }
-                },
-              ),
-              state.assists != null
-                  ? state.assists.length > 0
-                      ? ListView.builder(
-                          primary: false,
-                          itemBuilder: (ctx, i) => AssistItem(
-                            assist: state.assists[i],
-                          ),
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemCount: state.assists.length,
-                        )
-                      : Container(
-                          margin:
-                              EdgeInsets.only(top: responsive.heigthPercent(2)),
-                          child: Center(
-                            child: Text(
-                                'No Haz Registrado Ninguna Asistencia Aún'),
-                          ),
-                        )
-                  : SizedBox()
-            ],
+                state.assists != null
+                    ? state.assists.length > 0
+                        ? ListView.builder(
+                            primary: false,
+                            itemBuilder: (ctx, i) => AssistItem(
+                              assist: state.assists[i],
+                              bloc: context.bloc<AssistsBloc>().valuationsBloc,
+                            ),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: state.assists.length,
+                          )
+                        : Container(
+                            margin: EdgeInsets.only(
+                                top: responsive.heigthPercent(2)),
+                            child: Center(
+                              child: Text(
+                                  'No Haz Registrado Ninguna Asistencia Aún'),
+                            ),
+                          )
+                    : SizedBox()
+              ],
+            ),
           ),
         );
       },

@@ -77,7 +77,7 @@ class ValuationItem extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: responsive.widthPercent(1)),
-                ValuationStars(valuation.valuation)
+                Flexible(child: ValuationStars(valuation.valuation))
               ],
             ),
           ),

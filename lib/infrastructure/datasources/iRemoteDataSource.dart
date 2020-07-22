@@ -22,4 +22,9 @@ abstract class IRemoteDataSource {
   Future<List<Assist>> getMyAssists(String token);
   Future<User> getUser(String token);
   Future<Assist> addNewAssist({@required String code, @required String token});
+  Future<Valuation> addValuation(
+      {@required String assistId,
+      @required int valuation,
+      String detail,
+      @required String token});
 }

@@ -107,4 +107,26 @@ class ServiceRepository implements IServicesRepository {
       return Left(Failure('No tienes conexión a internet'));
     }
   }
+
+  @override
+  Future<Either<Failure, Valuation>> addValuation(
+      {String assistId, int valuation, String detail}) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final token = await localDataSource.getToken();
+        if (token == null)
+          return Left(Failure('No se encontró un usuario logueado'));
+        final response = await remoteDataSource.addValuation(
+            assistId: assistId,
+            valuation: valuation,
+            detail: detail,
+            token: token);
+        return Right(response);
+      } catch (e) {
+        return Left(Failure(e.toString()));
+      }
+    } else {
+      return Left(Failure('No tienes conexión a internet'));
+    }
+  }
 }

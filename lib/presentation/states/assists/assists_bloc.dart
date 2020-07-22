@@ -4,6 +4,7 @@ import 'package:aulataller/application/boundaries/add_assist/addAssist.dart';
 import 'package:aulataller/application/boundaries/get_my_assists/get_my_assists.dart';
 import 'package:aulataller/domain/entities/assist.dart';
 import 'package:aulataller/presentation/models/code.dart';
+import 'package:aulataller/presentation/states/valuations/valuations_bloc.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
@@ -15,16 +16,22 @@ part 'assists_state.dart';
 class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
   IGetMyAssists _getMyAssists;
   IAddNewAssist _addNewAssist;
+  final ValuationsBloc valuationsBloc;
+  StreamSubscription valuationsBlocSuscription;
 
   AssistsBloc({
     @required getMyAssists,
     @required addNewAssist,
-  })  : assert(
-          getMyAssists != null,
-          addNewAssist != null,
-        ),
+    @required this.valuationsBloc,
+  })  : assert(getMyAssists != null, addNewAssist != null),
         _getMyAssists = getMyAssists,
-        _addNewAssist = addNewAssist;
+        _addNewAssist = addNewAssist {
+    valuationsBlocSuscription = valuationsBloc.listen((state) {
+      if (state.status.isSubmissionSuccess) {
+        add(GetAssists());
+      }
+    });
+  }
 
   @override
   AssistsState get initialState => AssistsState();
@@ -84,5 +91,11 @@ class AssistsBloc extends Bloc<AssistsEvent, AssistsState> {
       status: Formz.validate([_code]),
       error: "",
     );
+  }
+
+  @override
+  Future<void> close() {
+    valuationsBlocSuscription.cancel();
+    return super.close();
   }
 }

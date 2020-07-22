@@ -161,7 +161,7 @@ class RemoteDataSource implements IRemoteDataSource {
   Future<List<Valuation>> getMyValuations(String token) async {
     try {
       final response = await client.get(
-        urlAPI + 'valoracion/me',
+        urlAPI + 'valoracion/me?sort=-fecha',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -242,6 +242,42 @@ class RemoteDataSource implements IRemoteDataSource {
       );
       if (response.statusCode == 200) {
         return json.decode(response.body)["token"];
+      } else
+        throw CustomException(json.decode(response.body)["message"]);
+    } catch (e) {
+      throw CustomException(e.toString());
+    }
+  }
+
+  @override
+  Future<Valuation> addValuation({
+    String assistId,
+    int valuation,
+    String detail,
+    String token,
+  }) async {
+    try {
+      final response = await client.post(
+        urlAPI + 'valoracion',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: json.encode({
+          "idAsistencia": assistId,
+          "valoracion": valuation,
+          "detalle": detail,
+        }),
+      );
+      if (response.statusCode == 201) {
+        return ValuationModel(
+          attendanceDay: null,
+          id: null,
+          inCharge: null,
+          typeOfService: null,
+          valuation: null,
+          detail: null,
+        );
       } else
         throw CustomException(json.decode(response.body)["message"]);
     } catch (e) {

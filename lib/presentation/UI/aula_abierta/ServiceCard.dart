@@ -35,8 +35,8 @@ class ServiceCard extends StatelessWidget {
             ),
           ],
         ),
-        width: responsive.widthPercent(45),
-        height: responsive.heigthPercent(27),
+        width: responsive.widthPercent(50),
+        height: responsive.heigthPercent(26),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

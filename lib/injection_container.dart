@@ -1,4 +1,5 @@
 import 'package:aulataller/application/boundaries/add_assist/addAssist.dart';
+import 'package:aulataller/application/boundaries/add_valuation.dart/iAddValuation.dart';
 import 'package:aulataller/application/boundaries/get_all_services/iGetAllServices.dart';
 import 'package:aulataller/application/boundaries/get_aula_abierta_services.dart/iGetAulaAbiertaServices.dart';
 import 'package:aulataller/application/boundaries/get_current_user/iGetCurrentUser.dart';
@@ -10,6 +11,7 @@ import 'package:aulataller/application/boundaries/open_dynamic_link/iOpenDynamic
 import 'package:aulataller/application/boundaries/register_user/iRegisterUser.dart';
 import 'package:aulataller/application/boundaries/save_user/iSaveUser.dart';
 import 'package:aulataller/application/usecases/addAssist.dart';
+import 'package:aulataller/application/usecases/addNewValuation.dart';
 import 'package:aulataller/application/usecases/deleteUserUseCase.dart';
 import 'package:aulataller/application/usecases/getAulaAbiertaServices.dart';
 import 'package:aulataller/application/usecases/getCurrentUser.dart';
@@ -39,7 +41,6 @@ import 'package:aulataller/presentation/states/home/home_bloc.dart';
 import 'package:aulataller/presentation/states/login/login_bloc.dart';
 import 'package:aulataller/presentation/states/register/register_bloc.dart';
 import 'package:aulataller/presentation/states/sabios_gratin/sabios_bloc.dart';
-import 'package:aulataller/presentation/states/valuations/valuations_bloc.dart';
 import 'package:aulataller/utils/networkInfo.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
@@ -50,6 +51,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'application/boundaries/delete_user/iDeleteUser.dart';
 import 'application/boundaries/update_password/iUpdatePassword.dart';
 import 'application/usecases/getAllServices.dart';
+import 'presentation/states/valuations/valuations_bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -105,6 +107,8 @@ Future<void> setup() async {
       () => AddNewAssist(serviceRepository: getIt<IServicesRepository>()));
   getIt.registerLazySingleton<IUpdatePassword>(
       () => UpdatePassword(authRepository: getIt<IAuthRepository>()));
+  getIt.registerLazySingleton<IAddNewValuation>(
+      () => AddNewValuation(serviceRepository: getIt<IServicesRepository>()));
 
   //presentation
   getIt.registerFactory<LoginBloc>(() => LoginBloc(
@@ -142,10 +146,13 @@ Future<void> setup() async {
         updatePassword: getIt<IUpdatePassword>()),
   );
   getIt.registerFactory<ValuationsBloc>(
-    () => ValuationsBloc(getMyValuations: getIt<IGetMyValuations>()),
+    () => ValuationsBloc(
+        getMyValuations: getIt<IGetMyValuations>(),
+        addNewValuation: getIt<IAddNewValuation>()),
   );
   getIt.registerFactory<AssistsBloc>(
     () => AssistsBloc(
+        valuationsBloc: getIt<ValuationsBloc>(),
         addNewAssist: getIt<IAddNewAssist>(),
         getMyAssists: getIt<IGetMyAssists>()),
   );

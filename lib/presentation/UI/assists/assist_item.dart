@@ -1,15 +1,19 @@
 import 'package:aulataller/domain/entities/assist.dart';
+import 'package:aulataller/presentation/UI/valuations/add_valuation_page.dart';
 import 'package:aulataller/presentation/UI/widgets/info_item.dart';
+import 'package:aulataller/presentation/states/valuations/valuations_bloc.dart';
 import 'package:aulataller/utils/customSnackBar.dart';
 import 'package:aulataller/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class AssistItem extends StatelessWidget {
   final Assist assist;
+  final ValuationsBloc bloc;
 
   const AssistItem({
     Key key,
     @required this.assist,
+    @required this.bloc,
   }) : super(key: key);
 
   @override
@@ -21,6 +25,13 @@ class AssistItem extends StatelessWidget {
           CustomSnackBar.showErrorSnackBar(
               ctx: context,
               leftWidget: Text('Ya haz valorado esta asistencia'));
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddValuationPage(assist.id, bloc),
+            ),
+          );
         }
       },
       child: Container(
