@@ -7,7 +7,7 @@ class NewPassCode extends FormzInput<String, NewPassCodeError> {
   const NewPassCode.dirty(String value) : super.dirty(value);
 
   static final _newPassCodeRegex = RegExp(
-    r'^[a-zA-Z0-9]{16}$',
+    r'^[a-zA-Z0-9]{6}$',
   );
 
   @override
