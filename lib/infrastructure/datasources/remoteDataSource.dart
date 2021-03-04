@@ -17,8 +17,8 @@ import 'package:http/http.dart' as http;
 
 class RemoteDataSource implements IRemoteDataSource {
   final http.Client client;
-  final String urlAPI = 'http://192.168.0.9:3000/api/v1/';
-  /* 'https://aulataller-api-iilx44yojq-uk.a.run.app/api/v1/'; */
+  final String urlAPI = 'https://aulatallerapi-kkt6dnisqq-ue.a.run.app/api/v1/';
+  /* 'http://192.168.0.9:3000/api/v1/'; */
 
   RemoteDataSource({@required this.client});
 
