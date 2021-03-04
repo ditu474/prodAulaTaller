@@ -5,12 +5,14 @@ class SVGButton extends StatelessWidget {
   final Function tapHandler;
   final double size;
   final String url;
+  final String label;
 
   const SVGButton({
-    Key key, 
-    @required this.tapHandler, 
-    this.size = 100, 
+    Key key,
+    @required this.tapHandler,
+    this.size = 100,
     @required this.url,
+    @required this.label,
   }) : super(key: key);
 
   @override
@@ -21,8 +23,8 @@ class SVGButton extends StatelessWidget {
         constraints: BoxConstraints(maxWidth: 100, maxHeight: 100),
         child: Container(
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
             color: Colors.white,
+            shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
                 color: Colors.black,
@@ -31,11 +33,13 @@ class SVGButton extends StatelessWidget {
               ),
             ],
           ),
-          child:SvgPicture.network(
+          child: SvgPicture.asset(
             url,
-            fit:BoxFit.contain,
+            semanticsLabel: label,
+            fit: BoxFit.contain,
             height: size,
-            width: size)
+            width: size,
+          ),
         ),
       ),
     );

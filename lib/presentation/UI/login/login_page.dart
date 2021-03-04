@@ -1,7 +1,9 @@
 import 'package:aulataller/injection_container.dart';
+import 'package:aulataller/presentation/UI/forgot_password/forgot_pass_page.dart';
 import 'package:aulataller/presentation/UI/login/loginForm.dart';
 import 'package:aulataller/presentation/UI/login/logo.dart';
 import 'package:aulataller/presentation/UI/login/socialMedia.dart';
+import 'package:aulataller/presentation/UI/register/register_page.dart';
 import 'package:aulataller/presentation/UI/widgets/customTextNavigation.dart';
 import 'package:aulataller/presentation/states/login/login_bloc.dart';
 import 'package:aulataller/utils/responsive.dart';
@@ -12,10 +14,10 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:BlocProvider<LoginBloc>(
-        create: (context)=>getIt<LoginBloc>(),
-        child:  Body()
-      )
+      body: BlocProvider<LoginBloc>(
+        create: (context) => getIt<LoginBloc>(),
+        child: Body(),
+      ),
     );
   }
 }
@@ -25,23 +27,24 @@ class Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final IResponsive responsive = Responsive.of(context);
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Container(
         height: double.infinity,
-        width: double.infinity,        
+        width: double.infinity,
         decoration: BoxDecoration(
-          gradient:LinearGradient(
-            colors:[Colors.green[800],
-                    Colors.green[600],
-                    Colors.green[400]
-                    ],
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft
-          )
+          gradient: LinearGradient(
+            colors: [
+              Colors.green[400],
+              Colors.green[600],
+              Colors.green[400],
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
         ),
-        child:SafeArea(
+        child: SafeArea(
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Padding(
@@ -50,23 +53,34 @@ class Body extends StatelessWidget {
                 children: <Widget>[
                   const Logo(),
                   const LoginForm(),
-                  SizedBox(height:responsive.heigthPercent(2.5)),
+                  SizedBox(height: responsive.heigthPercent(2)),
                   CustomTextNavigation(
                     text: 'Olvidaste tu contraseña?',
-                    onTap: (){},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgotPasswordPage()),
+                      );
+                    },
                   ),
-                  SizedBox(height:responsive.heigthPercent(1.2)),
+                  SizedBox(height: responsive.heigthPercent(1)),
                   CustomTextNavigation(
                     text: 'Crear una cuenta nueva',
-                    onTap: (){},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterPage()),
+                      );
+                    },
                   ),
-                  SizedBox(height:responsive.heigthPercent(2.7)),
+                  SizedBox(height: responsive.heigthPercent(2.2)),
                   SocialMedia(),
                 ],
               ),
             ),
           ),
-        )
+        ),
       ),
     );
   }
