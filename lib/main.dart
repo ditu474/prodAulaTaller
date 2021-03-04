@@ -4,9 +4,10 @@ import 'package:aulataller/presentation/UI/home/splashScreen.dart';
 import 'package:aulataller/presentation/UI/login/login_page.dart';
 import 'package:aulataller/presentation/states/authentication/auth_bloc.dart';
 import 'package:flutter/material.dart';
-import 'injection_container.dart' as getInstances;
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'injection_container.dart' as getInstances;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

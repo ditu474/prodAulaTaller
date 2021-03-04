@@ -6,8 +6,8 @@ import 'package:aulataller/presentation/states/register/register_bloc.dart';
 import 'package:aulataller/utils/customSnackBar.dart';
 import 'package:aulataller/utils/data.dart';
 import 'package:aulataller/utils/responsive.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -21,7 +21,6 @@ class _RegisterFormState extends State<RegisterForm> {
     final IResponsive responsive = Responsive.of(context);
     return BlocConsumer<RegisterBloc, RegisterState>(
       listener: (context, state) {
-        print(state.status.toString());
         if (state.status.isSubmissionInProgress) {
           CustomSnackBar.showLoadingSnackBar(
             ctx: context,
@@ -51,7 +50,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 keyboard: TextInputType.text,
                 errorMsg: state.name.value == ''
                     ? null
-                    : state.name.valid ? null : 'Nombre inválido',
+                    : state.name.valid
+                        ? null
+                        : 'Nombre inválido',
                 onChangeFunction: (value) {
                   context.bloc<RegisterBloc>().add(NameChanged(name: value));
                 },
@@ -79,7 +80,9 @@ class _RegisterFormState extends State<RegisterForm> {
                     : TextInputType.number,
                 errorMsg: state.document.value == ''
                     ? null
-                    : state.document.valid ? null : 'Documento inválido',
+                    : state.document.valid
+                        ? null
+                        : 'Documento inválido',
                 onChangeFunction: (value) {
                   context
                       .bloc<RegisterBloc>()
@@ -158,7 +161,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 keyboard: TextInputType.emailAddress,
                 errorMsg: state.email.value == ''
                     ? null
-                    : state.email.valid ? null : 'Email inválido',
+                    : state.email.valid
+                        ? null
+                        : 'Email inválido',
                 onChangeFunction: (value) {
                   context.bloc<RegisterBloc>().add(EmailChanged(email: value));
                 },
@@ -171,7 +176,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 keyboard: TextInputType.text,
                 errorMsg: state.password.value == ''
                     ? null
-                    : state.password.valid ? null : 'Contraseña invalida',
+                    : state.password.valid
+                        ? null
+                        : 'Contraseña invalida',
                 onChangeFunction: (value) {
                   context
                       .bloc<RegisterBloc>()
